@@ -13,14 +13,15 @@ import lombok.Data;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String vorname;
-    String nachname;
-    String abteilung;
-    String position;
-    String bereich;
-    String mail;
-    String telefon;
-    String standort;
-    String beschreibung;
-    String programme;
+    private Integer id;
+    private String vorname;
+    private String nachname;
+    private String abteilung;
+    private String position;
+    private String bereich;
+    private String mail;
+    private String telefon;
+    private String standort;
+    private String beschreibung;
+    private String programme;
 }
