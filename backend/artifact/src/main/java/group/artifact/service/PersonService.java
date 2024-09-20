@@ -15,6 +15,7 @@ public class PersonService {
         if (person == null) {
             throw new IllegalArgumentException("Person cannot be null");
         }
+        System.out.println(person.getAbteilung());
         try {
             personRepository.save(person);
         } catch (Exception e) {
