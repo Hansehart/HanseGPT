@@ -15,7 +15,7 @@ const Hero = () => (
       Ihr Browser unterstützt das Video-Tag nicht.
     </video>
     <div className="absolute inset-0 bg-[#90001f] bg-opacity-70"></div>
-    <div className="relative z-10 container mx-auto h-full flex items-center">
+    <div className="relative z-10 container mx-auto h-full flex items-center px-4 max-w-[90%]">
       <div className="text-white max-w-2xl">
         <h2 className="text-4xl md:text-5xl font-bold mb-6">Navigieren Sie Ihren Arbeitsplatz mit Leichtigkeit</h2>
         <p className="text-xl mb-8">CompanyCompass: Der KI-gestützte Chatbot, der Ihre Mitarbeiter sofort mit den richtigen Personen und Ressourcen verbindet.</p>
@@ -29,7 +29,7 @@ const Hero = () => (
 
 const Features = () => (
   <section id="features" className="py-20 bg-white">
-    <div className="container mx-auto">
+    <div className="container mx-auto px-4 max-w-[90%]">
       <h2 className="text-3xl font-bold text-center mb-12 text-[#90001f]">Warum CompanyCompass wählen?</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[
@@ -50,7 +50,7 @@ const Features = () => (
 
 const HowItWorks = () => (
   <section id="how-it-works" className="py-20 bg-[#90001f] text-white">
-    <div className="container mx-auto">
+    <div className="container mx-auto px-4 max-w-[90%]">
       <h2 className="text-3xl font-bold text-center mb-12">Wie CompanyCompass funktioniert</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {[
@@ -74,7 +74,7 @@ const HowItWorks = () => (
 
 const Testimonials = () => (
   <section className="py-20 bg-white text-[#90001f]">
-    <div className="container mx-auto">
+    <div className="container mx-auto px-4 max-w-[90%]">
       <h2 className="text-3xl font-bold text-center mb-12">Was unsere Kunden sagen</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {[
@@ -115,7 +115,7 @@ const PricingCard = ({ title, price, features }) => (
 
 const Pricing = () => (
   <section id="pricing" className="py-20 bg-white">
-    <div className="container mx-auto">
+    <div className="container mx-auto px-4 max-w-[90%]">
       <h2 className="text-3xl font-bold text-center mb-12 text-[#90001f]">Wählen Sie Ihren Plan</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <PricingCard
@@ -140,7 +140,7 @@ const Pricing = () => (
 
 const CTASection = () => (
   <section className="bg-[#90001f] text-white py-20">
-    <div className="container mx-auto text-center">
+    <div className="container mx-auto px-4 max-w-[90%] text-center">
       <h2 className="text-3xl font-bold mb-4">Bereit, Ihren Arbeitsplatz zu transformieren?</h2>
       <p className="text-xl mb-8">Schließen Sie sich führenden Unternehmen an und stärken Sie Ihre Mitarbeiter mit CompanyCompass noch heute!</p>
       <button className="bg-white text-[#90001f] font-bold py-3 px-8 rounded-full hover:bg-gray-200">
@@ -152,7 +152,7 @@ const CTASection = () => (
 
 const Footer = () => (
   <footer className="bg-[#90001f] text-white py-8">
-    <div className="container mx-auto text-center">
+    <div className="container mx-auto px-4 max-w-[90%] text-center">
       <p>&copy; 2024 CompanyCompass. Alle Rechte vorbehalten.</p>
     </div>
   </footer>
