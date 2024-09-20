@@ -1,18 +1,27 @@
 import React from 'react';
+import teamwork from "../assets/videos/business-teamwork.mp4";
 import { MessageSquare, Users, Zap, Clock, BarChart, Shield, Star } from 'lucide-react';
 
 const Hero = () => (
-  <section className="bg-[#90001f] text-white py-20">
-    <div className="container mx-auto flex flex-col md:flex-row items-center">
-      <div className="md:w-1/2 mb-10 md:mb-0">
+  <section className="relative h-screen overflow-hidden">
+    <video 
+      className="absolute top-0 left-0 w-full h-full object-cover filter blur-sm"
+      autoPlay 
+      loop 
+      muted 
+      playsInline
+    >
+      <source src={teamwork} type="video/mp4" />
+      Ihr Browser unterstützt das Video-Tag nicht.
+    </video>
+    <div className="absolute inset-0 bg-[#90001f] bg-opacity-70"></div>
+    <div className="relative z-10 container mx-auto h-full flex items-center">
+      <div className="text-white max-w-2xl">
         <h2 className="text-4xl md:text-5xl font-bold mb-6">Navigieren Sie Ihren Arbeitsplatz mit Leichtigkeit</h2>
         <p className="text-xl mb-8">CompanyCompass: Der KI-gestützte Chatbot, der Ihre Mitarbeiter sofort mit den richtigen Personen und Ressourcen verbindet.</p>
         <a href="#demo" className="bg-white text-[#90001f] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
           Demo ausprobieren <MessageSquare className="ml-2" />
         </a>
-      </div>
-      <div className="md:w-1/2">
-        <img src="/api/placeholder/500/500" alt="CompanyCompass Oberfläche" className="rounded-lg shadow-2xl" />
       </div>
     </div>
   </section>
