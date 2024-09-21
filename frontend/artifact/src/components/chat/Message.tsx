@@ -1,4 +1,4 @@
-import { User, Mail, Phone, ScanSearch } from "lucide-react";
+import { User, Mail, Phone, Plus } from "lucide-react";
 import LoadingPhrase from "../basics/LoadingPhrase";
 
 const Message = ({ message, onGenerateMore }) => {
@@ -81,8 +81,8 @@ const Message = ({ message, onGenerateMore }) => {
                       onClick={onGenerateMore}
                       className="mt-2 flex items-center text-[#c3002d] hover:underline"
                     >
-                      <ScanSearch size={14} className="mr-1" />
-                      weitere suchen
+                      <Plus size={14} className="mr-1" />
+                      zeige mehr
                     </button>
                   )}
                 </>
