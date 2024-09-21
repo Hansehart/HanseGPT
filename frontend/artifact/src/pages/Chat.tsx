@@ -7,13 +7,13 @@ const convertImageToBase64 = (file: File): Promise<string> => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        resolve(reader.result.split(',')[1]);
+      if (typeof reader.result === "string") {
+        resolve(reader.result.split(",")[1]);
       } else {
-        reject(new Error('Failed to convert image to base64'));
+        reject(new Error("Failed to convert image to base64"));
       }
     };
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 };
 
@@ -43,14 +43,18 @@ const ChatInterface = () => {
     if (inputText.trim() === "" && !image) return;
 
     const newMessage = { text: inputText, sender: "user", image: image };
-    setMessages((prev) => [...prev, newMessage, { sender: "ai", loading: true }]);
+    setMessages((prev) => [
+      ...prev,
+      newMessage,
+      { sender: "ai", loading: true },
+    ]);
     setInputText("");
     setIsLoading(true);
 
     try {
       let requestBody = {
         input_text: inputText.trim(),
-        input_image: null
+        input_image: null,
       };
 
       if (image) {
@@ -65,7 +69,7 @@ const ChatInterface = () => {
       const response = await fetch("https://gpt.hansehart.de/api/ai/", {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       });
@@ -83,7 +87,10 @@ const ChatInterface = () => {
       console.error("Error:", error);
       setMessages((prev) => [
         ...prev.slice(0, -1),
-        { text: "Sorry, der Praktikant hat den falschen Stecker gezogen!", sender: "ai" },
+        {
+          text: "Sorry, der Praktikant hat den falschen Stecker gezogen!",
+          sender: "ai",
+        },
       ]);
     } finally {
       setIsLoading(false);
@@ -92,18 +99,20 @@ const ChatInterface = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white max-w-[90vw] mx-auto">
-      <div className="h-16 bg-[#c3002d] fixed top-0 left-0 right-0 z-10"></div>
-      <MessageList messages={messages} messagesEndRef={messagesEndRef} />
-      <InputArea
-        inputText={inputText}
-        setInputText={setInputText}
-        image={image}
-        setImage={setImage}
-        isLoading={isLoading}
-        handleSendMessage={handleSendMessage}
-      />
-    </div>
+    <>
+      <div className="h-16 bg-[#c3002d] absolute top-0 left-0 right-0 z-10"></div>
+      <div className="flex flex-col h-screen bg-white max-w-[90vw] mx-auto">
+        <MessageList messages={messages} messagesEndRef={messagesEndRef} />
+        <InputArea
+          inputText={inputText}
+          setInputText={setInputText}
+          image={image}
+          setImage={setImage}
+          isLoading={isLoading}
+          handleSendMessage={handleSendMessage}
+        />
+      </div>
+    </>
   );
 };
 

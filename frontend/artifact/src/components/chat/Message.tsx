@@ -1,8 +1,36 @@
-import { User } from 'lucide-react';
+import { User, Mail } from 'lucide-react';
 import LoadingPhrase from "../basics/LoadingPhrase";
 
 const Message = ({ message }) => {
   const isUser = message.sender === "user";
+
+  const renderEmployeeInfo = (text) => {
+    const employees = text.split('\n\n');
+    return employees.map((employee, index) => {
+      const lines = employee.split('\n');
+      const name = lines[0];
+      const emailLine = lines.find(line => line.startsWith('Mail:'));
+      const email = emailLine ? emailLine.split(': ')[1] : '';
+
+      return (
+        <div key={index} className="mb-2">
+          <div>{name}</div>
+          {email && (
+            <a 
+              href={`mailto:${email}`} 
+              className="text-blue-500 hover:underline flex items-center"
+            >
+              <Mail size={14} className="mr-1" />
+              {email}
+            </a>
+          )}
+          {lines.slice(1).map((line, lineIndex) => (
+            <div key={lineIndex}>{line}</div>
+          ))}
+        </div>
+      );
+    });
+  };
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-start mb-4`}>
@@ -17,14 +45,18 @@ const Message = ({ message }) => {
         ) : (
           <>
             <div className={`p-2 rounded-lg ${isUser ? 'bg-[#c3002d] text-white' : 'bg-gray-200 text-gray-800'}`}>
-              <pre className="whitespace-pre-wrap font-sans">
-                {message.text}
-              </pre>
+              {isUser ? (
+                <pre className="whitespace-pre-wrap font-sans">
+                  {message.text}
+                </pre>
+              ) : (
+                renderEmployeeInfo(message.text)
+              )}
             </div>
             {message.image && (
-              <img 
-                src={URL.createObjectURL(message.image)} 
-                alt="User uploaded" 
+              <img
+                src={URL.createObjectURL(message.image)}
+                alt="User uploaded"
                 className="mt-2 max-w-full rounded-lg"
               />
             )}
