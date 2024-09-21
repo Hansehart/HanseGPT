@@ -1,9 +1,7 @@
-import { useState } from 'react';
-import { User, Mail, Phone, ChevronDown } from "lucide-react";
+import { User, Mail, Phone } from "lucide-react";
 import LoadingPhrase from "../basics/LoadingPhrase";
 
-const Message = ({ message, onLoadMore }) => {
-  const [expanded, setExpanded] = useState(false);
+const Message = ({ message }) => {
   const isUser = message.sender === "user";
 
   const renderEmployeeInfo = (text) => {
@@ -15,6 +13,7 @@ const Message = ({ message, onLoadMore }) => {
       const phoneLine = lines.find((line) => line.startsWith("Telefon:"));
       const email = emailLine ? emailLine.split(": ")[1] : "";
       const phone = phoneLine ? phoneLine.split(": ")[1] : "";
+
       return (
         <div key={index} className="mb-4">
           <div className="font-bold text-lg">{name}</div>
@@ -80,18 +79,7 @@ const Message = ({ message, onLoadMore }) => {
                   {message.text}
                 </pre>
               ) : (
-                <>
-                  {renderEmployeeInfo(expanded ? message.text : message.text.split("\n\n").slice(0, 3).join("\n\n"))}
-                  {!expanded && message.text.split("\n\n").length > 3 && (
-                    <button
-                      onClick={() => setExpanded(true)}
-                      className="text-blue-500 hover:underline flex items-center mt-2"
-                    >
-                      <ChevronDown size={14} className="mr-1" />
-                      Weitere anzeigen
-                    </button>
-                  )}
-                </>
+                renderEmployeeInfo(message.text)
               )}
             </div>
             {message.image && (
@@ -108,14 +96,6 @@ const Message = ({ message, onLoadMore }) => {
         <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0 ml-2 flex items-center justify-center">
           <User className="text-gray-600" size={16} />
         </div>
-      )}
-      {!isUser && !message.loading && (
-        <button
-          onClick={onLoadMore}
-          className="ml-2 px-3 py-1 bg-[#c3002d] text-white rounded hover:bg-[#90001f]"
-        >
-          Weitere
-        </button>
       )}
     </div>
   );
