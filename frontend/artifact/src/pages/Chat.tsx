@@ -42,6 +42,21 @@ const ChatInterface = () => {
     }
   }, [image]);
 
+  const convertImageToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          resolve(reader.result.split(',')[1]);
+        } else {
+          reject(new Error('Failed to convert image to base64'));
+        }
+      };
+      reader.onerror = error => reject(error);
+    });
+  };
+
   const handleSendMessage = async () => {
     if (inputText.trim() === "" && !image) return;
 
@@ -51,15 +66,27 @@ const ChatInterface = () => {
     setIsLoading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('input_text', inputText);
+      let requestBody: { input_text: string; input_image: string | null } = {
+        input_text: inputText.trim(),
+        input_image: null
+      };
+
       if (image) {
-        formData.append('image', image);
+        try {
+          const base64Image = await convertImageToBase64(image);
+          requestBody.input_image = base64Image;
+        } catch (error) {
+          console.error("Error converting image to base64:", error);
+          // Handle the error as needed, e.g., show a message to the user
+        }
       }
 
       const response = await fetch("https://gpt.hansehart.de/api/ai/", {
         method: "POST",
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
