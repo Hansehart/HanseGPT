@@ -148,7 +148,7 @@ const ChatInterface = () => {
     setImage(null);
   };
 
-  const renderMessage = (message) => {
+  const renderMessage = (message: { sender: string; text?: string; loading?: boolean; image?: File }) => {
     const isUser = message.sender === "user";
     return (
       <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-start mb-4`}>
@@ -163,7 +163,9 @@ const ChatInterface = () => {
           ) : (
             <>
               <div className={`p-2 rounded-lg ${isUser ? 'bg-[#c3002d] text-white' : 'bg-gray-200 text-gray-800'}`}>
-                {message.text}
+                <pre className="whitespace-pre-wrap font-sans">
+                  {message.text}
+                </pre>
               </div>
               {message.image && (
                 <img 
