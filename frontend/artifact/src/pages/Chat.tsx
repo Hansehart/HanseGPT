@@ -1,17 +1,28 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, User, Image as ImageIcon } from "lucide-react";
-import LoadingPhrase from "../components/basics/LoadingPhrase";
+import MessageList from "../components/chat/MessageList";
+import InputArea from "../components/chat/InputArea";
+
+const convertImageToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result.split(',')[1]);
+      } else {
+        reject(new Error('Failed to convert image to base64'));
+      }
+    };
+    reader.onerror = error => reject(error);
+  });
+};
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [dragActive, setDragActive] = useState(false);
   const [image, setImage] = useState(null);
-  const [imageHeight, setImageHeight] = useState(0);
   const messagesEndRef = useRef(null);
-  const fileInputRef = useRef(null);
-  const imageRef = useRef(null);
 
   useEffect(() => {
     setMessages([
@@ -28,35 +39,6 @@ const ChatInterface = () => {
 
   useEffect(scrollToBottom, [messages]);
 
-  useEffect(() => {
-    if (image && imageRef.current) {
-      const img = new Image();
-      img.onload = () => {
-        const aspectRatio = img.width / img.height;
-        const newHeight = Math.min(200, 300 / aspectRatio);
-        setImageHeight(newHeight);
-      };
-      img.src = URL.createObjectURL(image);
-    } else {
-      setImageHeight(0);
-    }
-  }, [image]);
-
-  const convertImageToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          resolve(reader.result.split(',')[1]);
-        } else {
-          reject(new Error('Failed to convert image to base64'));
-        }
-      };
-      reader.onerror = error => reject(error);
-    });
-  };
-
   const handleSendMessage = async () => {
     if (inputText.trim() === "" && !image) return;
 
@@ -66,7 +48,7 @@ const ChatInterface = () => {
     setIsLoading(true);
 
     try {
-      let requestBody: { input_text: string; input_image: string | null } = {
+      let requestBody = {
         input_text: inputText.trim(),
         input_image: null
       };
@@ -77,7 +59,6 @@ const ChatInterface = () => {
           requestBody.input_image = base64Image;
         } catch (error) {
           console.error("Error converting image to base64:", error);
-          // Handle the error as needed, e.g., show a message to the user
         }
       }
 
@@ -106,162 +87,22 @@ const ChatInterface = () => {
       ]);
     } finally {
       setIsLoading(false);
-      setImage(null);  // Clear the image after sending
+      setImage(null);
     }
-  };
-
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      handleFile(e.target.files[0]);
-    }
-  };
-
-  const handleFile = (file) => {
-    if (file.type.startsWith("image/")) {
-      setImage(file);
-    } else {
-      alert("Please upload an image file.");
-    }
-  };
-
-  const removeImage = () => {
-    setImage(null);
-  };
-
-  const renderMessage = (message: { sender: string; text?: string; loading?: boolean; image?: File }) => {
-    const isUser = message.sender === "user";
-    return (
-      <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-start mb-4`}>
-        {!isUser && (
-          <div className="w-8 h-8 rounded-full bg-[#c3002d] flex-shrink-0 mr-2 flex items-center justify-center">
-            <User className="text-white" size={16} />
-          </div>
-        )}
-        <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} max-w-[70%]`}>
-          {message.loading ? (
-            <LoadingPhrase />
-          ) : (
-            <>
-              <div className={`p-2 rounded-lg ${isUser ? 'bg-[#c3002d] text-white' : 'bg-gray-200 text-gray-800'}`}>
-                <pre className="whitespace-pre-wrap font-sans">
-                  {message.text}
-                </pre>
-              </div>
-              {message.image && (
-                <img 
-                  src={URL.createObjectURL(message.image)} 
-                  alt="User uploaded" 
-                  className="mt-2 max-w-full rounded-lg"
-                />
-              )}
-            </>
-          )}
-        </div>
-        {isUser && (
-          <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0 ml-2 flex items-center justify-center">
-            <User className="text-gray-600" size={16} />
-          </div>
-        )}
-      </div>
-    );
   };
 
   return (
     <div className="flex flex-col h-screen bg-white max-w-[90vw] mx-auto">
       <div className="h-16 bg-[#c3002d] fixed top-0 left-0 right-0 z-10"></div>
-      <div className="flex-grow overflow-auto p-4 pt-20 pb-24">
-        <h2 className="text-xl font-bold mb-4 text-[#c3002d]">Chat</h2>
-        {messages.map((message, index) => (
-          <div key={index}>
-            {renderMessage(message)}
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
-      <div className="p-4 border-t border-gray-300 bottom-0 left-0 right-0 bg-white">
-        <div className="flex flex-col items-center max-w-[90vw] mx-auto">
-          <div 
-            className={`w-full border-2 rounded-lg flex flex-col overflow-hidden ${dragActive ? 'border-[#c3002d]' : 'border-gray-300'}`}
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-          >
-            <div className="flex items-center p-2">
-              <input
-                type="text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                placeholder="Hier deine Frage"
-                className="flex-grow focus:outline-none text-sm"
-                disabled={isLoading}
-              />
-              <button
-                onClick={() => fileInputRef.current.click()}
-                className="ml-2 text-gray-400 hover:text-[#c3002d] focus:outline-none"
-              >
-                <ImageIcon size={20} />
-              </button>
-              <button
-                onClick={handleSendMessage}
-                className="ml-2 text-[#c3002d] hover:text-[#90001f] focus:outline-none"
-                disabled={isLoading}
-              >
-                <Send size={20} />
-              </button>
-            </div>
-            {image && (
-              <div className="relative w-full" style={{ height: `${imageHeight}px` }}>
-                <img 
-                  ref={imageRef}
-                  src={URL.createObjectURL(image)} 
-                  alt="Uploaded" 
-                  className="w-full h-full object-contain"
-                />
-                <button 
-                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
-                  onClick={removeImage}
-                >
-                  X
-                </button>
-              </div>
-            )}
-            {!image && (
-              <div className="w-full h-10 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-                Drag & Drop Bild oder klicken
-              </div>
-            )}
-          </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleChange}
-            className="hidden"
-          />
-        </div>
-      </div>
+      <MessageList messages={messages} messagesEndRef={messagesEndRef} />
+      <InputArea
+        inputText={inputText}
+        setInputText={setInputText}
+        image={image}
+        setImage={setImage}
+        isLoading={isLoading}
+        handleSendMessage={handleSendMessage}
+      />
     </div>
   );
 };
