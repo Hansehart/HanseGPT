@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Send, Loader } from 'lucide-react';
+import { Send, Loader, User } from 'lucide-react';
 
-const Chat = () => {
+const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ const Chat = () => {
       }
 
       const data = await response.json();
-      const aiMessage = { text: data.response, sender: 'ai' };
+      const aiMessage = { text: data.result_text, sender: 'ai' };
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error('Error:', error);
@@ -43,6 +43,32 @@ const Chat = () => {
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const renderMessage = (message) => {
+    if (message.sender === 'user') {
+      return <div className="bg-[#70001a] text-white p-2 rounded-lg">{message.text}</div>;
+    } else {
+      const employees = message.text.split('\n\n').filter(emp => emp.trim() !== '');
+      return (
+        <div className="bg-gray-200 text-gray-800 p-2 rounded-lg">
+          <p className="font-bold mb-2">Die folgenden Mitarbeiter können dir behilflich sein:</p>
+          {employees.map((emp, index) => {
+            const [name, role, ...description] = emp.split('\n');
+            return (
+              <div key={index} className="mb-4 last:mb-0">
+                <div className="flex items-center mb-1">
+                  <User className="mr-2 text-[#70001a]" size={20} />
+                  <span className="font-semibold">{name}</span>
+                </div>
+                <p className="text-sm text-gray-600 mb-1">{role}</p>
+                <p className="text-sm">{description.join(' ').trim()}</p>
+              </div>
+            );
+          })}
+        </div>
+      );
     }
   };
 
@@ -59,15 +85,7 @@ const Chat = () => {
               message.sender === 'user' ? 'text-right' : 'text-left'
             }`}
           >
-            <div
-              className={`inline-block p-2 rounded-lg ${
-                message.sender === 'user'
-                  ? 'bg-[#70001a] text-white'
-                  : 'bg-gray-200 text-gray-800'
-              }`}
-            >
-              {message.text}
-            </div>
+            {renderMessage(message)}
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -96,4 +114,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default ChatInterface;
