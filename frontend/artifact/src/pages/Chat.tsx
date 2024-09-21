@@ -7,6 +7,16 @@ const ChatInterface = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
+  useEffect(() => {
+    // Add initial welcome message
+    setMessages([
+      {
+        text: "Moin bei RossConnect. Wenn suchst Du oder welches Problem liegt vor?",
+        sender: "ai"
+      }
+    ]);
+  }, []);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -52,7 +62,7 @@ const ChatInterface = () => {
   const renderMessage = (message) => {
     if (message.sender === "user") {
       return (
-        <div className="bg-[#70001a] text-white p-2 rounded-lg">
+        <div className="bg-[#c3002d] text-white p-2 rounded-lg">
           {message.text}
         </div>
       );
@@ -62,15 +72,12 @@ const ChatInterface = () => {
         .filter((emp) => emp.trim() !== "");
       return (
         <div className="bg-gray-200 text-gray-800 p-2 rounded-lg">
-          <p className="font-bold mb-2">
-            Die folgenden Mitarbeiter können dir behilflich sein:
-          </p>
           {employees.map((emp, index) => {
             const [name, role, ...description] = emp.split("\n");
             return (
               <div key={index} className="mb-4 last:mb-0">
                 <div className="flex items-center mb-1">
-                  <User className="mr-2 text-[#70001a]" size={20} />
+                  <User className="mr-2 text-[#c3002d]" size={20} />
                   <span className="font-semibold">{name}</span>
                 </div>
                 <p className="text-sm text-gray-600 mb-1">{role}</p>
@@ -86,8 +93,10 @@ const ChatInterface = () => {
   return (
     <div className="flex flex-col h-screen bg-white">
       <div className="h-16 bg-[#c3002d]"></div>
-      <div className="bg-[#70001a] text-white p-4">
-        <h1 className="text-2xl font-bold">Chat with CompanyCompass</h1>
+      <div className="text-white p-4">
+        <h2 className="text-2xl font-bold mb-4 text-[#c3002d]">
+          Chat
+        </h2>
       </div>
       <div className="flex-grow overflow-auto p-4">
         {messages.map((message, index) => (
@@ -110,12 +119,12 @@ const ChatInterface = () => {
             onChange={(e) => setInputText(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
             placeholder="Type your message here..."
-            className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#70001a]"
+            className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#c3002d]"
             disabled={isLoading}
           />
           <button
             onClick={handleSendMessage}
-            className="bg-[#70001a] text-white p-2 rounded-r-lg hover:bg-[#90001f] focus:outline-none focus:ring-2 focus:ring-[#70001a]"
+            className="bg-[#c3002d] text-white p-2 rounded-r-lg hover:bg-[#90001f] focus:outline-none focus:ring-2 focus:ring-[#c3002d]"
             disabled={isLoading}
           >
             {isLoading ? <Loader className="animate-spin" /> : <Send />}
