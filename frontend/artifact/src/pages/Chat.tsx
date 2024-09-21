@@ -23,6 +23,7 @@ const ChatInterface = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [excludeIds, setExcludeIds] = useState([]);
+  const [lastQuery, setLastQuery] = useState("");
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -35,7 +36,6 @@ const ChatInterface = () => {
       },
     ]);
     
-    // Reset scroll position to top on initial load
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = 0;
     }
@@ -53,21 +53,26 @@ const ChatInterface = () => {
     }
   }, [messages, isInitialLoad]);
 
-  const handleSendMessage = async () => {
-    if (inputText.trim() === "" && !image) return;
+  const handleSendMessage = async (text = inputText, generateMore = false) => {
+    if (!generateMore && text.trim() === "" && !image) return;
 
-    const newMessage = { text: inputText, sender: "user", image: image };
-    setMessages((prev) => [
-      ...prev,
-      newMessage,
-      { sender: "ai", loading: true },
-    ]);
+    if (!generateMore) {
+      const newMessage = { text: text, sender: "user", image: image };
+      setMessages((prev) => [...prev, newMessage]);
+      setLastQuery(text);
+      setExcludeIds([]); // Reset exclude IDs for new query
+    } else {
+      const generateMoreMessage = { text: "Give me more results", sender: "user" };
+      setMessages((prev) => [...prev, generateMoreMessage]);
+    }
+
+    setMessages((prev) => [...prev, { sender: "ai", loading: true }]);
     setInputText("");
     setIsLoading(true);
 
     try {
       let requestBody = {
-        input_text: inputText.trim(),
+        input_text: generateMore ? lastQuery : text.trim(),
         input_image: "",
         exclude_ids: excludeIds,
       };
@@ -95,12 +100,16 @@ const ChatInterface = () => {
 
       const data = await response.json();
       
-      // Update messages and exclude IDs
       setMessages((prev) => [
         ...prev.slice(0, -1),
-        { text: data.result_text[0], sender: "ai" },
+        { 
+          text: data.result_text[0], 
+          sender: "ai", 
+          excludeIds: data.result_text[1],
+          hasMore: data.result_text[1].length > 0
+        },
       ]);
-      setExcludeIds(data.result_text[1]);
+      setExcludeIds((prev) => [...prev, ...data.result_text[1]]);
 
     } catch (error) {
       console.error("Error:", error);
@@ -117,12 +126,20 @@ const ChatInterface = () => {
     }
   };
 
+  const handleGenerateMore = () => {
+    handleSendMessage(lastQuery, true);
+  };
+
   return (
     <>
       <div className="h-16 bg-[#c3002d] absolute top-0 left-0 right-0 z-10"></div>
       <div className="flex flex-col h-screen bg-white max-w-[90vw] mx-auto">
         <div ref={chatContainerRef} className="flex-grow overflow-auto">
-          <MessageList messages={messages} messagesEndRef={messagesEndRef} />
+          <MessageList 
+            messages={messages} 
+            messagesEndRef={messagesEndRef} 
+            onGenerateMore={handleGenerateMore}
+          />
         </div>
         <InputArea
           inputText={inputText}

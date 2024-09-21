@@ -1,7 +1,7 @@
-import { User, Mail, Phone } from "lucide-react";
+import { User, Mail, Phone, Plus } from "lucide-react";
 import LoadingPhrase from "../basics/LoadingPhrase";
 
-const Message = ({ message }) => {
+const Message = ({ message, onGenerateMore }) => {
   const isUser = message.sender === "user";
 
   const renderEmployeeInfo = (text) => {
@@ -15,9 +15,9 @@ const Message = ({ message }) => {
       const email = emailLine ? emailLine.split(": ")[1] : "";
       const phone = phoneLine ? phoneLine.split(": ")[1] : "";
       const description = lines.slice(3).join("\n");
-  
+
       return (
-        <div key={index} className="mb-4">
+        <div key={index} className="mb-4 p-2 bg-white rounded shadow">
           <div className="font-bold text-lg">{name}</div>
           <div className="text-sm text-gray-600 mb-1">{role}</div>
           {email && (
@@ -74,7 +74,18 @@ const Message = ({ message }) => {
                   {message.text}
                 </pre>
               ) : (
-                renderEmployeeInfo(message.text)
+                <>
+                  {renderEmployeeInfo(message.text)}
+                  {message.hasMore && (
+                    <button
+                      onClick={onGenerateMore}
+                      className="mt-2 flex items-center text-[#c3002d] hover:underline"
+                    >
+                      <Plus size={14} className="mr-1" />
+                      Generate More
+                    </button>
+                  )}
+                </>
               )}
             </div>
             {message.image && (
