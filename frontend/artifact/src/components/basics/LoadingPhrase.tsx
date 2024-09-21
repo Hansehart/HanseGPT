@@ -13,13 +13,14 @@ const LoadingAnimation = () => {
   const [currentPhrase, setCurrentPhrase] = useState(loadingPhrases[0]);
   const [dots, setDots] = useState('');
 
+  const getRandomPhrase = () => {
+    const randomIndex = Math.floor(Math.random() * loadingPhrases.length);
+    return loadingPhrases[randomIndex];
+  };
+
   useEffect(() => {
     const phraseInterval = setInterval(() => {
-      setCurrentPhrase(prevPhrase => {
-        const currentIndex = loadingPhrases.indexOf(prevPhrase);
-        const nextIndex = (currentIndex + 1) % loadingPhrases.length;
-        return loadingPhrases[nextIndex];
-      });
+      setCurrentPhrase(getRandomPhrase());
     }, 2000);
 
     const dotInterval = setInterval(() => {
