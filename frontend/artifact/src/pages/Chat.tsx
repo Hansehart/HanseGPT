@@ -54,7 +54,7 @@ const ChatInterface = () => {
     try {
       let requestBody = {
         input_text: inputText.trim(),
-        input_image: null,
+        input_image: "",
       };
 
       if (image) {
@@ -94,7 +94,7 @@ const ChatInterface = () => {
       ]);
     } finally {
       setIsLoading(false);
-      setImage(null);
+      setImage("");
     }
   };
 
