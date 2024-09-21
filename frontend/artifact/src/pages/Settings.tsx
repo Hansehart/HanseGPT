@@ -9,7 +9,10 @@ const Settings = () => {
   const [itemsPerPage] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
   const [showForm, setShowForm] = useState(false);
   const [newPerson, setNewPerson] = useState({
     vorname: "",
@@ -21,7 +24,7 @@ const Settings = () => {
     telefon: "",
     standort: "",
     beschreibung: "",
-    programme: ""
+    programme: "",
   });
 
   useEffect(() => {
@@ -64,10 +67,10 @@ const Settings = () => {
       if (sortConfig.key !== null) {
         results.sort((a, b) => {
           if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? -1 : 1;
+            return sortConfig.direction === "ascending" ? -1 : 1;
           }
           if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? 1 : -1;
+            return sortConfig.direction === "ascending" ? 1 : -1;
           }
           return 0;
         });
@@ -79,9 +82,9 @@ const Settings = () => {
   }, [searchTerm, persons, sortConfig]);
 
   const requestSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
     }
     setSortConfig({ key, direction });
   };
@@ -125,7 +128,7 @@ const Settings = () => {
         telefon: "",
         standort: "",
         beschreibung: "",
-        programme: ""
+        programme: "",
       });
       setShowForm(false);
     } catch (error) {
@@ -135,7 +138,11 @@ const Settings = () => {
   };
 
   if (isLoading) {
-    return <div className="min-h-screen flex justify-center items-center"><Loading/></div>
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {
@@ -145,30 +152,33 @@ const Settings = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col justify-center">
       <div className="h-16 bg-[#c3002d]"></div>
-      
+
       <div className="container mx-auto px-4 py-8">
         <h2 className="text-2xl font-bold mb-4 text-[#c3002d]">
           Mitarbeiterverzeichnis
         </h2>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2 sm:gap-4">
           <input
             type="text"
             placeholder="Suche..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-2/3 p-2 border border-[#c3002d] rounded focus:outline-none focus:ring-2 focus:ring-[#c3002d]"
+            className="w-full sm:flex-grow p-2 border border-[#c3002d] rounded focus:outline-none focus:ring-2 focus:ring-[#c3002d] text-base h-[6vh] sm:h-auto"
           />
           <button
             onClick={() => setShowForm(!showForm)}
-            className="px-4 py-2 bg-[#c3002d] text-white rounded hover:bg-[#8a0020]"
+            className="w-full sm:w-auto whitespace-nowrap p-2 bg-[#c3002d] text-white rounded hover:bg-[#8a0020] text-base h-[6vh] sm:h-auto"
           >
             {showForm ? "Formular ausblenden" : "Person hinzufügen"}
           </button>
         </div>
-        
+
         {showForm && (
-          <form onSubmit={handleSubmit} className="mb-8 bg-gray-100 p-4 rounded">
-            <div className="grid grid-cols-2 gap-4">
+          <form
+            onSubmit={handleSubmit}
+            className="mb-8 bg-gray-100 p-4 rounded"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
                 type="text"
                 name="vorname"
@@ -232,7 +242,7 @@ const Settings = () => {
             </button>
           </form>
         )}
-        
+
         {currentItems.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full border-collapse border border-[#c3002d] table-fixed">
@@ -245,20 +255,45 @@ const Settings = () => {
               </colgroup>
               <thead>
                 <tr className="bg-[#c3002d] text-white">
-                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('nachname')}>
-                    Name {sortConfig.key === 'nachname' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  <th
+                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    onClick={() => requestSort("nachname")}
+                  >
+                    Name{" "}
+                    {sortConfig.key === "nachname" &&
+                      (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
-                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('abteilung')}>
-                    Abteilung {sortConfig.key === 'abteilung' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  <th
+                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    onClick={() => requestSort("abteilung")}
+                  >
+                    Abteilung{" "}
+                    {sortConfig.key === "abteilung" &&
+                      (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
-                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('position')}>
-                    Position {sortConfig.key === 'position' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  <th
+                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    onClick={() => requestSort("position")}
+                  >
+                    Position{" "}
+                    {sortConfig.key === "position" &&
+                      (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
-                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('mail')}>
-                    E-Mail {sortConfig.key === 'mail' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  <th
+                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    onClick={() => requestSort("mail")}
+                  >
+                    E-Mail{" "}
+                    {sortConfig.key === "mail" &&
+                      (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
-                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('telefon')}>
-                    Telefon {sortConfig.key === 'telefon' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  <th
+                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    onClick={() => requestSort("telefon")}
+                  >
+                    Telefon{" "}
+                    {sortConfig.key === "telefon" &&
+                      (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
                 </tr>
               </thead>

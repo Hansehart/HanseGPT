@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <h2 className="text-2xl font-bold text-white">CompanyCompass</h2>
+            <h2 className="text-2xl font-bold text-white">RossConnect</h2>
             <p className="text-sm mt-2 text-white">© 2024 HanseGPT. Alle Rechte vorbehalten.</p>
           </div>
           <nav className="flex flex-wrap justify-center md:justify-end">

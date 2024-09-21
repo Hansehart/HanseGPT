@@ -18,7 +18,7 @@ const Hero = () => (
     <div className="relative z-10 container mx-auto h-full flex items-center px-4 max-w-[90%]">
       <div className="text-white max-w-2xl">
         <h2 className="text-4xl md:text-5xl font-bold mb-6">Navigieren Sie Ihren Arbeitsplatz mit Leichtigkeit</h2>
-        <p className="text-xl mb-8">CompanyCompass: Der KI-gestützte Chatbot, der Ihre Mitarbeiter sofort mit den richtigen Personen und Ressourcen verbindet.</p>
+        <p className="text-xl mb-8">RossConnect: Der KI-gestützte Chatbot, der Ihre Mitarbeiter sofort mit den richtigen Personen und Ressourcen verbindet.</p>
         <a href="chat" className="bg-white text-[#c3002d] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
           Demo ausprobieren <MessageSquare className="ml-2" />
         </a>
@@ -30,7 +30,7 @@ const Hero = () => (
 const Features = () => (
   <section id="features" className="py-20 bg-white">
     <div className="container mx-auto px-4 max-w-[90%]">
-      <h2 className="text-3xl font-bold text-center mb-12 text-[#c3002d]">Warum CompanyCompass wählen?</h2>
+      <h2 className="text-3xl font-bold text-center mb-12 text-[#c3002d]">Warum RossConnect wählen?</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[
           { 
@@ -64,12 +64,12 @@ const Features = () => (
 const HowItWorks = () => (
   <section id="how-it-works" className="py-20 bg-[#c3002d] text-white">
     <div className="container mx-auto px-4 max-w-[90%]">
-      <h2 className="text-3xl font-bold text-center mb-12">Wie CompanyCompass funktioniert</h2>
+      <h2 className="text-3xl font-bold text-center mb-12">Wie RossConnect funktioniert</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {[
           { icon: <MessageSquare className="w-12 h-12" />, title: "Frage stellen", description: "Mitarbeiter geben einfach ihre Anfrage in die Chatbot-Oberfläche ein." },
           { icon: <Zap className="w-12 h-12" />, title: "KI-Verarbeitung", description: "Unsere KI analysiert die Anfrage und identifiziert die relevanteste Abteilung oder Person." },
-          { icon: <Users className="w-12 h-12" />, title: "Verbinden", description: "CompanyCompass stellt Kontaktinformationen bereit oder verbindet den Mitarbeiter direkt mit der richtigen Person." },
+          { icon: <Users className="w-12 h-12" />, title: "Verbinden", description: "RossConnect stellt Kontaktinformationen bereit oder verbindet den Mitarbeiter direkt mit der richtigen Person." },
           { icon: <BarChart className="w-12 h-12" />, title: "Einblicke", description: "Manager erhalten Analysen zu häufigen Anfragen und Mitarbeiterbedürfnissen für kontinuierliche Verbesserungen." },
         ].map((step, index) => (
           <div key={index} className="flex flex-col items-center text-center">
@@ -91,8 +91,8 @@ const Testimonials = () => (
       <h2 className="text-3xl font-bold text-center mb-12">Was unsere Kunden sagen</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {[
-          { name: "Sarah L., HR-Direktorin", text: "CompanyCompass hat unsere interne Kommunikation revolutioniert. Es ist, als hätte jeder Mitarbeiter einen persönlichen Assistenten!", rating: 5 },
-          { name: "Michael R., CEO", text: "Die Effizienzsteigerungen, die wir seit der Implementierung von CompanyCompass gesehen haben, sind bemerkenswert. Es ist ein Gamechanger für große Organisationen.", rating: 5 },
+          { name: "Sarah L., HR-Direktorin", text: "RossConnect hat unsere interne Kommunikation revolutioniert. Es ist, als hätte jeder Mitarbeiter einen persönlichen Assistenten!", rating: 5 },
+          { name: "Michael R., CEO", text: "Die Effizienzsteigerungen, die wir seit der Implementierung von RossConnect gesehen haben, sind bemerkenswert. Es ist ein Gamechanger für große Organisationen.", rating: 5 },
         ].map((testimonial, index) => (
           <div key={index} className="bg-white p-6 rounded-lg border-2 border-[#c3002d]">
             <div className="flex mb-2">
@@ -113,7 +113,7 @@ const CTASection = () => (
   <section className="bg-[#c3002d] text-white py-20">
     <div className="container mx-auto px-4 max-w-[90%] text-center">
       <h2 className="text-3xl font-bold mb-4">Bereit, Ihren Arbeitsplatz zu transformieren?</h2>
-      <p className="text-xl mb-8">Schließen Sie sich führenden Unternehmen an und stärken Sie Ihre Mitarbeiter mit CompanyCompass noch heute!</p>
+      <p className="text-xl mb-8">Schließen Sie sich führenden Unternehmen an und stärken Sie Ihre Mitarbeiter mit RossConnect noch heute!</p>
       <a href="chat" className="bg-white text-[#c3002d] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
           Demo ausprobieren <MessageSquare className="ml-2" />
         </a>
