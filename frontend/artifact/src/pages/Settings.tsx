@@ -153,7 +153,7 @@ const Settings = () => {
     <div className="min-h-screen bg-white flex flex-col justify-center">
       <div className="h-16 bg-[#c3002d]"></div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8  max-w-[90%]">
         <h2 className="text-2xl font-bold mb-4 text-[#c3002d]">
           Mitarbeiterverzeichnis
         </h2>
