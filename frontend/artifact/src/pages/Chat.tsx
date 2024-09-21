@@ -117,43 +117,33 @@ const ChatInterface = () => {
   };
 
   const renderMessage = (message) => {
-    if (message.sender === "user") {
-      return (
-        <div className="flex flex-col items-end">
-          <p className="bg-[#c3002d] text-white p-2 rounded-lg max-w-[80%]">
+    const isUser = message.sender === "user";
+    return (
+      <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-start mb-4`}>
+        {!isUser && (
+          <div className="w-8 h-8 rounded-full bg-[#c3002d] flex-shrink-0 mr-2 flex items-center justify-center">
+            <User className="text-white" size={16} />
+          </div>
+        )}
+        <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} max-w-[70%]`}>
+          <div className={`p-2 rounded-lg ${isUser ? 'bg-[#c3002d] text-white' : 'bg-gray-200 text-gray-800'}`}>
             {message.text}
-          </p>
+          </div>
           {message.image && (
             <img 
               src={URL.createObjectURL(message.image)} 
               alt="User uploaded" 
-              className="mt-2 max-w-[80%] rounded-lg"
+              className="mt-2 max-w-full rounded-lg"
             />
           )}
         </div>
-      );
-    } else {
-      const employees = message.text
-        .split("\n\n")
-        .filter((emp) => emp.trim() !== "");
-      return (
-        <div className="bg-gray-200 text-gray-800 p-2 rounded-lg max-w-[80%]">
-          {employees.map((emp, index) => {
-            const [name, role, ...description] = emp.split("\n");
-            return (
-              <div key={index} className="mb-4 last:mb-0">
-                <div className="flex items-center mb-1">
-                  <User className="mr-2 text-[#c3002d] flex-shrink-0" size={16} />
-                  <span className="font-semibold text-sm">{name}</span>
-                </div>
-                <p className="text-xs text-gray-600 mb-1">{role}</p>
-                <p className="text-xs">{description.join(" ").trim()}</p>
-              </div>
-            );
-          })}
-        </div>
-      );
-    }
+        {isUser && (
+          <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0 ml-2 flex items-center justify-center">
+            <User className="text-gray-600" size={16} />
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -162,12 +152,7 @@ const ChatInterface = () => {
       <div className="flex-grow overflow-auto p-4 pt-20 pb-24">
         <h2 className="text-xl font-bold mb-4 text-[#c3002d]">Chat</h2>
         {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`mb-4 ${
-              message.sender === "user" ? "flex justify-end" : "flex justify-start"
-            }`}
-          >
+          <div key={index}>
             {renderMessage(message)}
           </div>
         ))}
@@ -224,7 +209,7 @@ const ChatInterface = () => {
             )}
             {!image && (
               <div className="w-full h-10 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-                Drag & Drop Bild
+                Drag & Drop Bild oder klicken
               </div>
             )}
           </div>
