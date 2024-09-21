@@ -40,10 +40,14 @@ const InputArea = ({ inputText, setInputText, image, setImage, isLoading, handle
     }
   };
 
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
   return (
     <div className="p-4 border-t border-gray-300 bottom-0 left-0 right-0 bg-white">
       <div className="flex flex-col items-center max-w-[90vw] mx-auto">
-        <div 
+        <div
           className={`w-full border-2 rounded-lg flex flex-col overflow-hidden ${dragActive ? 'border-[#c3002d]' : 'border-gray-300'}`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -61,7 +65,7 @@ const InputArea = ({ inputText, setInputText, image, setImage, isLoading, handle
               disabled={isLoading}
             />
             <button
-              onClick={() => fileInputRef.current.click()}
+              onClick={triggerFileInput}
               className="ml-2 text-gray-400 hover:text-[#c3002d] focus:outline-none"
             >
               <ImageIcon size={20} />
@@ -78,7 +82,7 @@ const InputArea = ({ inputText, setInputText, image, setImage, isLoading, handle
             <ImagePreview image={image} setImage={setImage} />
           ) : (
             <div className="w-full h-10 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-              Drag & Drop Bild oder klicken
+              Drag & Drop Bild
             </div>
           )}
         </div>

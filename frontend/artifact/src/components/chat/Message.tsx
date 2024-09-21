@@ -1,4 +1,4 @@
-import { User, Mail } from 'lucide-react';
+import { User, Mail, Phone } from 'lucide-react';
 import LoadingPhrase from "../basics/LoadingPhrase";
 
 const Message = ({ message }) => {
@@ -10,22 +10,35 @@ const Message = ({ message }) => {
       const lines = employee.split('\n');
       const name = lines[0];
       const emailLine = lines.find(line => line.startsWith('Mail:'));
+      const phoneLine = lines.find(line => line.startsWith('Telefon:'));
       const email = emailLine ? emailLine.split(': ')[1] : '';
+      const phone = phoneLine ? phoneLine.split(': ')[1] : '';
 
       return (
-        <div key={index} className="mb-2">
-          <div>{name}</div>
+        <div key={index} className="mb-4">
+          <div className="font-semibold">{name}</div>
           {email && (
-            <a 
-              href={`mailto:${email}`} 
-              className="text-blue-500 hover:underline flex items-center"
+            <a
+              href={`mailto:${email}`}
+              className="text-blue-500 hover:underline flex items-center mb-1"
             >
               <Mail size={14} className="mr-1" />
               {email}
             </a>
           )}
+          {phone && (
+            <a
+              href={`tel:${phone}`}
+              className="text-blue-500 hover:underline flex items-center mb-1"
+            >
+              <Phone size={14} className="mr-1" />
+              {phone}
+            </a>
+          )}
           {lines.slice(1).map((line, lineIndex) => (
-            <div key={lineIndex}>{line}</div>
+            !line.startsWith('Mail:') && !line.startsWith('Telefon:') && (
+              <div key={lineIndex} className="text-sm">{line}</div>
+            )
           ))}
         </div>
       );
@@ -54,9 +67,9 @@ const Message = ({ message }) => {
               )}
             </div>
             {message.image && (
-              <img
-                src={URL.createObjectURL(message.image)}
-                alt="User uploaded"
+              <img 
+                src={URL.createObjectURL(message.image)} 
+                alt="User uploaded" 
                 className="mt-2 max-w-full rounded-lg"
               />
             )}
