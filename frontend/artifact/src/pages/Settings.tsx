@@ -1,107 +1,187 @@
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 
-const PersonTable = () => {
+const SearchablePersonTable = () => {
   const [persons, setPersons] = useState([]);
+  const [filteredPersons, setFilteredPersons] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [token, setToken] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
-  const handleTokenSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  useEffect(() => {
+    fetchPersons();
+  }, []);
 
+  const fetchPersons = async () => {
     try {
-      const response = await fetch('https://gpt.hansehart.de/api/service/receive/persons', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+      setIsLoading(true);
+      const response = await fetch(
+        "https://gpt.hansehart.de/api/service/receive/persons",
+        {
+          headers: {
+            Authorization: "Bearer DieSiegerLautenHanseGPT1",
+          },
         }
-      });
-
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       const data = await response.json();
       setPersons(data);
+      setFilteredPersons(data);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      setError('Failed to fetch data. Please check your token and try again.');
+      console.error("Error fetching persons:", error);
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (persons) {
+      let results = persons.filter((person) =>
+        Object.values(person).some((value) =>
+          value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+
+      if (sortConfig.key !== null) {
+        results.sort((a, b) => {
+          if (a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? -1 : 1;
+          }
+          if (a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? 1 : -1;
+          }
+          return 0;
+        });
+      }
+
+      setFilteredPersons(results);
+      setCurrentPage(1);
+    }
+  }, [searchTerm, persons, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredPersons.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-4 text-[#70001a]">Mitarbeiterliste</h2>
+    <div className="min-h-screen bg-white flex flex-col">
+      <div className="h-16 bg-[#c3002d]"></div>
       
-      <form onSubmit={handleTokenSubmit} className="mb-6">
-        <div className="flex items-center">
-          <input
-            type="text"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            placeholder="Enter Bearer Token"
-            className="flex-grow px-4 py-2 border border-[#70001a] rounded-l focus:outline-none focus:ring-2 focus:ring-[#70001a]"
-            required
-          />
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold mb-4 text-[#c3002d]">
+          Mitarbeiterverzeichnis
+        </h2>
+        <input
+          type="text"
+          placeholder="Suche..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-2 mb-4 border border-[#c3002d] rounded focus:outline-none focus:ring-2 focus:ring-[#c3002d]"
+        />
+        {currentItems.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-[#c3002d] table-fixed">
+              <colgroup>
+                <col className="w-[20%]" />
+                <col className="w-[20%]" />
+                <col className="w-[20%]" />
+                <col className="w-[20%]" />
+                <col className="w-[20%]" />
+              </colgroup>
+              <thead>
+                <tr className="bg-[#c3002d] text-white">
+                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('nachname')}>
+                    Name {sortConfig.key === 'nachname' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  </th>
+                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('abteilung')}>
+                    Abteilung {sortConfig.key === 'abteilung' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  </th>
+                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('position')}>
+                    Position {sortConfig.key === 'position' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  </th>
+                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('mail')}>
+                    E-Mail {sortConfig.key === 'mail' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  </th>
+                  <th className="border border-[#c3002d] p-2 cursor-pointer" onClick={() => requestSort('telefon')}>
+                    Telefon {sortConfig.key === 'telefon' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((person, index) => (
+                  <tr
+                    key={person.id}
+                    className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                  >
+                    <td className="border border-[#c3002d] p-2 break-words">{`${person.vorname} ${person.nachname}`}</td>
+                    <td className="border border-[#c3002d] p-2 break-words">
+                      {person.abteilung}
+                    </td>
+                    <td className="border border-[#c3002d] p-2 break-words">
+                      {person.position}
+                    </td>
+                    <td className="border border-[#c3002d] p-2 break-words">
+                      {person.mail}
+                    </td>
+                    <td className="border border-[#c3002d] p-2 break-words">
+                      {person.telefon}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-center text-[#c3002d]">Keine Daten verfügbar</p>
+        )}
+        <div className="flex justify-between items-center mt-4">
           <button
-            type="submit"
-            className="px-4 py-2 bg-[#70001a] text-white rounded-r hover:bg-[#8a0020] focus:outline-none focus:ring-2 focus:ring-[#70001a]"
-            disabled={isLoading}
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-[#c3002d] text-white rounded disabled:opacity-50 hover:bg-[#8a0020]"
           >
-            {isLoading ? 'Loading...' : 'Fetch Data'}
+            Vorherige
+          </button>
+          <span className="text-[#c3002d]">
+            Seite {currentPage} von{" "}
+            {Math.ceil(filteredPersons.length / itemsPerPage)}
+          </span>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={
+              currentPage === Math.ceil(filteredPersons.length / itemsPerPage)
+            }
+            className="px-4 py-2 bg-[#c3002d] text-white rounded disabled:opacity-50 hover:bg-[#8a0020]"
+          >
+            Nächste
           </button>
         </div>
-      </form>
-
-      {error && <div className="text-red-500 text-center py-4">{error}</div>}
-
-      {isLoading ? (
-        <p className="text-center">Loading...</p>
-      ) : persons.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-[#70001a]">
-            <thead>
-              <tr className="bg-[#70001a] text-white">
-                <th className="px-4 py-2">ID</th>
-                <th className="px-4 py-2">Vorname</th>
-                <th className="px-4 py-2">Nachname</th>
-                <th className="px-4 py-2">Abteilung</th>
-                <th className="px-4 py-2">Position</th>
-                <th className="px-4 py-2">Bereich</th>
-                <th className="px-4 py-2">E-Mail</th>
-                <th className="px-4 py-2">Telefon</th>
-                <th className="px-4 py-2">Standort</th>
-                <th className="px-4 py-2">Beschreibung</th>
-                <th className="px-4 py-2">Programme</th>
-              </tr>
-            </thead>
-            <tbody>
-              {persons.map((person, index) => (
-                <tr key={person.id} className={index % 2 === 0 ? 'bg-[#fff5f6]' : 'bg-white'}>
-                  <td className="border px-4 py-2">{person.id}</td>
-                  <td className="border px-4 py-2">{person.vorname}</td>
-                  <td className="border px-4 py-2">{person.nachname}</td>
-                  <td className="border px-4 py-2">{person.abteilung}</td>
-                  <td className="border px-4 py-2">{person.position}</td>
-                  <td className="border px-4 py-2">{person.bereich}</td>
-                  <td className="border px-4 py-2">{person.mail}</td>
-                  <td className="border px-4 py-2">{person.telefon}</td>
-                  <td className="border px-4 py-2">{person.standort}</td>
-                  <td className="border px-4 py-2">{person.beschreibung}</td>
-                  <td className="border px-4 py-2">{person.programme}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : null}
+      </div>
     </div>
   );
 };
 
-export default PersonTable;
+export default SearchablePersonTable;

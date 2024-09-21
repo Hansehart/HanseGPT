@@ -2,13 +2,13 @@ import { ExternalLink } from 'lucide-react';
 
 const LicenseItem = ({ name, licenseType, link }) => (
   <div className="mb-6">
-    <h3 className="text-xl font-semibold text-[#70001a] mb-2">{name}</h3>
+    <h3 className="text-xl font-semibold text-[#c3002d] mb-2">{name}</h3>
     <p className="mb-1">Lizenz: {licenseType}</p>
     <a 
       href={link} 
       target="_blank" 
       rel="noopener noreferrer" 
-      className="text-[#70001a] hover:underline inline-flex items-center"
+      className="text-[#c3002d] hover:underline inline-flex items-center"
     >
       Lizenzdetails
       <ExternalLink size={16} className="ml-1" />
@@ -19,10 +19,10 @@ const LicenseItem = ({ name, licenseType, link }) => (
 const License = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="h-16 bg-[#70001a]"></div>
+      <div className="h-16 bg-[#c3002d]"></div>
       
       <div className="flex-grow container mx-auto px-4 py-8 max-w-2xl">
-        <h1 className="text-3xl font-bold text-[#70001a] mb-8">Lizenzen</h1>
+        <h1 className="text-3xl font-bold text-[#c3002d] mb-8">Lizenzen</h1>
         
         <p className="mb-6">
           Die Seiten enthält Lizenzinformationen für Produkte, die verwendet wurden.    

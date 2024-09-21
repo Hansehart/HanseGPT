@@ -9,7 +9,7 @@ import Home from "./pages/Home";
 import Layout from "./components/layout/Layout";
 import Construction from "./pages/Construction";
 import License from "./pages/License";
-import { Settings } from "lucide-react";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
