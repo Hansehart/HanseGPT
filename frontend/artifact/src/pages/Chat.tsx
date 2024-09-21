@@ -52,9 +52,7 @@ const ChatInterface = () => {
 
     try {
       const formData = new FormData();
-      if (inputText.trim() !== "") {
-        formData.append('input_text', inputText);
-      }
+      formData.append('input_text', inputText);
       if (image) {
         formData.append('image', image);
       }
@@ -77,7 +75,7 @@ const ChatInterface = () => {
       console.error("Error:", error);
       setMessages((prev) => [
         ...prev.slice(0, -1),
-        { text: "Sorry, der Praktikant hat den falschen Stecker gezogen!.", sender: "ai" },
+        { text: "Sorry, der Praktikant hat den falschen Stecker gezogen!", sender: "ai" },
       ]);
     } finally {
       setIsLoading(false);
