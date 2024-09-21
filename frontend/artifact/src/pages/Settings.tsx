@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Loading from "../components/basics/Loading";
 
-const SearchablePersonTable = () => {
+const Settings = () => {
   const [persons, setPersons] = useState([]);
   const [filteredPersons, setFilteredPersons] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,6 +10,19 @@ const SearchablePersonTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [showForm, setShowForm] = useState(false);
+  const [newPerson, setNewPerson] = useState({
+    vorname: "",
+    nachname: "",
+    abteilung: "",
+    position: "",
+    bereich: "",
+    mail: "",
+    telefon: "",
+    standort: "",
+    beschreibung: "",
+    programme: ""
+  });
 
   useEffect(() => {
     fetchPersons();
@@ -79,6 +92,48 @@ const SearchablePersonTable = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewPerson({ ...newPerson, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        "https://gpt.hansehart.de/api/service/save/person",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer DieSiegerLautenHanseGPT1",
+          },
+          body: JSON.stringify(newPerson),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      await fetchPersons();
+      setNewPerson({
+        vorname: "",
+        nachname: "",
+        abteilung: "",
+        position: "",
+        bereich: "",
+        mail: "",
+        telefon: "",
+        standort: "",
+        beschreibung: "",
+        programme: ""
+      });
+      setShowForm(false);
+    } catch (error) {
+      console.error("Error saving person:", error);
+      setError(error.message);
+    }
+  };
+
   if (isLoading) {
     return <div className="min-h-screen flex justify-center items-center"><Loading/></div>
   }
@@ -95,13 +150,89 @@ const SearchablePersonTable = () => {
         <h2 className="text-2xl font-bold mb-4 text-[#c3002d]">
           Mitarbeiterverzeichnis
         </h2>
-        <input
-          type="text"
-          placeholder="Suche..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 mb-4 border border-[#c3002d] rounded focus:outline-none focus:ring-2 focus:ring-[#c3002d]"
-        />
+        <div className="flex justify-between items-center mb-4">
+          <input
+            type="text"
+            placeholder="Suche..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-2/3 p-2 border border-[#c3002d] rounded focus:outline-none focus:ring-2 focus:ring-[#c3002d]"
+          />
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="px-4 py-2 bg-[#c3002d] text-white rounded hover:bg-[#8a0020]"
+          >
+            {showForm ? "Formular ausblenden" : "Person hinzufügen"}
+          </button>
+        </div>
+        
+        {showForm && (
+          <form onSubmit={handleSubmit} className="mb-8 bg-gray-100 p-4 rounded">
+            <div className="grid grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="vorname"
+                value={newPerson.vorname}
+                onChange={handleInputChange}
+                placeholder="Vorname"
+                className="p-2 border border-[#c3002d] rounded"
+                required
+              />
+              <input
+                type="text"
+                name="nachname"
+                value={newPerson.nachname}
+                onChange={handleInputChange}
+                placeholder="Nachname"
+                className="p-2 border border-[#c3002d] rounded"
+                required
+              />
+              <input
+                type="text"
+                name="abteilung"
+                value={newPerson.abteilung}
+                onChange={handleInputChange}
+                placeholder="Abteilung"
+                className="p-2 border border-[#c3002d] rounded"
+                required
+              />
+              <input
+                type="text"
+                name="position"
+                value={newPerson.position}
+                onChange={handleInputChange}
+                placeholder="Position"
+                className="p-2 border border-[#c3002d] rounded"
+                required
+              />
+              <input
+                type="email"
+                name="mail"
+                value={newPerson.mail}
+                onChange={handleInputChange}
+                placeholder="E-Mail"
+                className="p-2 border border-[#c3002d] rounded"
+                required
+              />
+              <input
+                type="tel"
+                name="telefon"
+                value={newPerson.telefon}
+                onChange={handleInputChange}
+                placeholder="Telefon"
+                className="p-2 border border-[#c3002d] rounded"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-4 px-4 py-2 bg-[#c3002d] text-white rounded hover:bg-[#8a0020]"
+            >
+              Person speichern
+            </button>
+          </form>
+        )}
+        
         {currentItems.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full border-collapse border border-[#c3002d] table-fixed">
@@ -185,4 +316,4 @@ const SearchablePersonTable = () => {
   );
 };
 
-export default SearchablePersonTable;
+export default Settings;
