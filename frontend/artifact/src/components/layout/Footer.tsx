@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   const links = [
-    { display: 'Impressum', route: '/imprint' },
+    { display: 'AGB', route: '/gtc' },
     { display: 'Datenschutz', route: '/privacy' },
-    { display: 'AGB', route: '/gtc' }
+    { display: 'Impressum', route: '/imprint' },
+    { display: 'Lizenz', route: '/license' },
   ];
 
   return (
@@ -14,7 +15,7 @@ const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
             <h2 className="text-2xl font-bold text-white">CompanyCompass</h2>
-            <p className="text-sm mt-2 text-white">© 2024 Hansehart. Alle Rechte vorbehalten.</p>
+            <p className="text-sm mt-2 text-white">© 2024 HanseGPT. Alle Rechte vorbehalten.</p>
           </div>
           <nav className="flex flex-wrap justify-center md:justify-end">
             {links.map((item) => (

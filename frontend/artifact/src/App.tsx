@@ -8,6 +8,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import Home from "./pages/Home";
 import Layout from "./components/layout/Layout";
 import Construction from "./pages/Construction";
+import License from "./pages/License";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/license" element={<License />} />
             <Route path="/imprint" element={<Construction />} />
             <Route path="/privacy" element={<Construction />} />
             <Route path="/gtc" element={<Construction />} />

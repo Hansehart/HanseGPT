@@ -33,20 +33,33 @@ const Features = () => (
       <h2 className="text-3xl font-bold text-center mb-12 text-[#90001f]">Warum CompanyCompass wählen?</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[
-          { icon: <Users className="w-12 h-12 text-[#90001f]" />, title: "Sofortige Mitarbeiterverbindungen" },
-          { icon: <Zap className="w-12 h-12 text-[#90001f]" />, title: "KI-gestützte Unterstützung" },
-          { icon: <Clock className="w-12 h-12 text-[#90001f]" />, title: "24/7 Verfügbarkeit" },
+          { 
+            icon: <Users className="w-12 h-12 text-[#90001f]" />, 
+            title: "Sofortige Mitarbeiterverbindungen",
+            description: "Verbinden Sie sich nahtlos mit den richtigen Kollegen und Abteilungen, um Probleme schnell und effizient zu lösen."
+          },
+          { 
+            icon: <Zap className="w-12 h-12 text-[#90001f]" />, 
+            title: "KI-gestützte Unterstützung",
+            description: "Nutzen Sie die Fähigkeiten künstlicher Intelligenz, um mehr Zeit für Aufgaben zu haben, auf die es wirklich ankommt."
+          },
+          { 
+            icon: <Clock className="w-12 h-12 text-[#90001f]" />, 
+            title: "24/7 Verfügbarkeit",
+            description: "Der Assistent ist nicht nur für jeden, sondern auch immer da. Endlich keine Wartezeiten mehr."
+          },
         ].map((feature, index) => (
           <div key={index} className="bg-white p-6 rounded-lg shadow-md text-center border border-[#90001f]">
             <div className="flex justify-center mb-4">{feature.icon}</div>
             <h3 className="text-xl font-semibold mb-2 text-[#90001f]">{feature.title}</h3>
-            <p className="text-gray-700">Optimieren Sie Ihre Arbeitsplatzkommunikation und steigern Sie die Produktivität mit unseren innovativen Funktionen.</p>
+            <p className="text-gray-700">{feature.description}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 );
+
 
 const HowItWorks = () => (
   <section id="how-it-works" className="py-20 bg-[#90001f] text-white">
