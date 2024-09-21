@@ -1,6 +1,62 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, Loader, User, Image as ImageIcon } from "lucide-react";
+import { Send, User, Image as ImageIcon } from "lucide-react";
 
+// LoadingAnimation Component
+const loadingPhrases = [
+  "Wishing the table...",
+  "Thinking on it...",
+  "Bouncing balls...",
+  "Shuffling thoughts...",
+  "Brewing ideas...",
+  "Connecting neurons...",
+  "Decoding mysteries...",
+  "Untangling logic...",
+  "Polishing answers...",
+  "Juggling concepts..."
+];
+
+const LoadingAnimation = () => {
+  const [currentPhrase, setCurrentPhrase] = useState(loadingPhrases[0]);
+  const [dots, setDots] = useState('');
+
+  useEffect(() => {
+    const phraseInterval = setInterval(() => {
+      setCurrentPhrase(prevPhrase => {
+        const currentIndex = loadingPhrases.indexOf(prevPhrase);
+        const nextIndex = (currentIndex + 1) % loadingPhrases.length;
+        return loadingPhrases[nextIndex];
+      });
+    }, 2000);
+
+    const dotInterval = setInterval(() => {
+      setDots(prevDots => prevDots.length < 3 ? prevDots + '.' : '');
+    }, 500);
+
+    return () => {
+      clearInterval(phraseInterval);
+      clearInterval(dotInterval);
+    };
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center justify-center h-20 bg-gray-100 rounded-lg p-4">
+      <div className="text-lg font-semibold text-[#c3002d] mb-2">
+        {currentPhrase}{dots}
+      </div>
+      <div className="flex space-x-2">
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="w-3 h-3 bg-[#c3002d] rounded-full animate-bounce"
+            style={{ animationDelay: `${i * 0.2}s` }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ChatInterface Component
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -32,7 +88,7 @@ const ChatInterface = () => {
       const img = new Image();
       img.onload = () => {
         const aspectRatio = img.width / img.height;
-        const newHeight = Math.min(200, 300 / aspectRatio); // Max height of 200px, max width of 300px
+        const newHeight = Math.min(200, 300 / aspectRatio);
         setImageHeight(newHeight);
       };
       img.src = URL.createObjectURL(image);
@@ -45,7 +101,7 @@ const ChatInterface = () => {
     if (inputText.trim() === "" && !image) return;
 
     const newMessage = { text: inputText, sender: "user", image: image };
-    setMessages((prev) => [...prev, newMessage]);
+    setMessages((prev) => [...prev, newMessage, { sender: "ai", loading: true }]);
     setInputText("");
     setImage(null);
     setIsLoading(true);
@@ -64,15 +120,16 @@ const ChatInterface = () => {
       }
 
       const data = await response.json();
-      const aiMessage = { text: data.result_text, sender: "ai" };
-      setMessages((prev) => [...prev, aiMessage]);
+      setMessages((prev) => [
+        ...prev.slice(0, -1),
+        { text: data.result_text, sender: "ai" },
+      ]);
     } catch (error) {
       console.error("Error:", error);
-      const errorMessage = {
-        text: "Sorry, there was an error processing your request.",
-        sender: "ai",
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [
+        ...prev.slice(0, -1),
+        { text: "Sorry, there was an error processing your request.", sender: "ai" },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -126,15 +183,21 @@ const ChatInterface = () => {
           </div>
         )}
         <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} max-w-[70%]`}>
-          <div className={`p-2 rounded-lg ${isUser ? 'bg-[#c3002d] text-white' : 'bg-gray-200 text-gray-800'}`}>
-            {message.text}
-          </div>
-          {message.image && (
-            <img 
-              src={URL.createObjectURL(message.image)} 
-              alt="User uploaded" 
-              className="mt-2 max-w-full rounded-lg"
-            />
+          {message.loading ? (
+            <LoadingAnimation />
+          ) : (
+            <>
+              <div className={`p-2 rounded-lg ${isUser ? 'bg-[#c3002d] text-white' : 'bg-gray-200 text-gray-800'}`}>
+                {message.text}
+              </div>
+              {message.image && (
+                <img 
+                  src={URL.createObjectURL(message.image)} 
+                  alt="User uploaded" 
+                  className="mt-2 max-w-full rounded-lg"
+                />
+              )}
+            </>
           )}
         </div>
         {isUser && (
@@ -188,7 +251,7 @@ const ChatInterface = () => {
                 className="ml-2 text-[#c3002d] hover:text-[#90001f] focus:outline-none"
                 disabled={isLoading}
               >
-                {isLoading ? <Loader className="animate-spin" size={20} /> : <Send size={20} />}
+                <Send size={20} />
               </button>
             </div>
             {image && (
