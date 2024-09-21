@@ -5,27 +5,21 @@ const Message = ({ message }) => {
   const isUser = message.sender === "user";
 
   const renderEmployeeInfo = (text) => {
-    const employees = text.split("\n\n");
+    const employees = text.split("\n\n").filter(emp => emp.trim() !== "");
+    
     return employees.map((employee, index) => {
       const lines = employee.split("\n");
-      const name = lines[0];
+      const [name, role] = lines[0].split(", ");
       const emailLine = lines.find((line) => line.startsWith("Mail:"));
       const phoneLine = lines.find((line) => line.startsWith("Telefon:"));
       const email = emailLine ? emailLine.split(": ")[1] : "";
       const phone = phoneLine ? phoneLine.split(": ")[1] : "";
-
+      const description = lines.slice(3).join("\n");
+  
       return (
         <div key={index} className="mb-4">
           <div className="font-bold text-lg">{name}</div>
-          {lines.slice(1).map(
-            (line, lineIndex) =>
-              !line.startsWith("Mail:") &&
-              !line.startsWith("Telefon:") && (
-                <div key={lineIndex} className="text-sm">
-                  {line}
-                </div>
-              )
-          )}
+          <div className="text-sm text-gray-600 mb-1">{role}</div>
           {email && (
             <a
               href={`mailto:${email}`}
@@ -44,6 +38,7 @@ const Message = ({ message }) => {
               {phone}
             </a>
           )}
+          <div className="text-sm mt-1">{description}</div>
         </div>
       );
     });

@@ -22,7 +22,10 @@ const ChatInterface = () => {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
+  const [excludeIds, setExcludeIds] = useState([]);
   const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     setMessages([
@@ -31,13 +34,24 @@ const ChatInterface = () => {
         sender: "ai",
       },
     ]);
+    
+    // Reset scroll position to top on initial load
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = 0;
+    }
   }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(() => {
+    if (!isInitialLoad) {
+      scrollToBottom();
+    } else {
+      setIsInitialLoad(false);
+    }
+  }, [messages, isInitialLoad]);
 
   const handleSendMessage = async () => {
     if (inputText.trim() === "" && !image) return;
@@ -55,6 +69,7 @@ const ChatInterface = () => {
       let requestBody = {
         input_text: inputText.trim(),
         input_image: "",
+        exclude_ids: excludeIds,
       };
 
       if (image) {
@@ -79,10 +94,14 @@ const ChatInterface = () => {
       }
 
       const data = await response.json();
+      
+      // Update messages and exclude IDs
       setMessages((prev) => [
         ...prev.slice(0, -1),
-        { text: data.result_text, sender: "ai" },
+        { text: data.result_text[0], sender: "ai" },
       ]);
+      setExcludeIds(data.result_text[1]);
+
     } catch (error) {
       console.error("Error:", error);
       setMessages((prev) => [
@@ -94,7 +113,7 @@ const ChatInterface = () => {
       ]);
     } finally {
       setIsLoading(false);
-      setImage("");
+      setImage(null);
     }
   };
 
@@ -102,7 +121,9 @@ const ChatInterface = () => {
     <>
       <div className="h-16 bg-[#c3002d] absolute top-0 left-0 right-0 z-10"></div>
       <div className="flex flex-col h-screen bg-white max-w-[90vw] mx-auto">
-        <MessageList messages={messages} messagesEndRef={messagesEndRef} />
+        <div ref={chatContainerRef} className="flex-grow overflow-auto">
+          <MessageList messages={messages} messagesEndRef={messagesEndRef} />
+        </div>
         <InputArea
           inputText={inputText}
           setInputText={setInputText}

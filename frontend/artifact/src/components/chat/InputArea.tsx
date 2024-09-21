@@ -45,7 +45,7 @@ const InputArea = ({ inputText, setInputText, image, setImage, isLoading, handle
   };
 
   return (
-    <div className="p-4 border-t border-gray-300 bottom-0 left-0 right-0 bg-white">
+    <div className="p-4 border-t border-gray-300 bottom-0 left-0 right-0 bg-white fixed">
       <div className="flex flex-col items-center max-w-[90vw] mx-auto">
         <div
           className={`w-full border-2 rounded-lg flex flex-col overflow-hidden ${dragActive ? 'border-[#c3002d]' : 'border-gray-300'}`}
