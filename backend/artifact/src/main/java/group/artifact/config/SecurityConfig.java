@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,7 +28,7 @@ public class SecurityConfig {
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/api/service/**").authenticated()
                 .anyRequest().authenticated())
-            .addFilterBefore(new ApiTokenAuthFilter(apiToken), UsernamePasswordAuthenticationFilter.class)
+            //.addFilterBefore(new ApiTokenAuthFilter(apiToken), UsernamePasswordAuthenticationFilter.class)
             .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
                 .configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
