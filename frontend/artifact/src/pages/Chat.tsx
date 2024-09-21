@@ -3,16 +3,11 @@ import { Send, User, Image as ImageIcon } from "lucide-react";
 
 // LoadingAnimation Component
 const loadingPhrases = [
-  "Wishing the table...",
-  "Thinking on it...",
-  "Bouncing balls...",
-  "Shuffling thoughts...",
-  "Brewing ideas...",
-  "Connecting neurons...",
-  "Decoding mysteries...",
-  "Untangling logic...",
-  "Polishing answers...",
-  "Juggling concepts..."
+  "verbinde Neuronen",
+  "wische Bier auf",
+  "durchsuche Datenbank",
+  "DROP * FROM users;",
+  "denke gründlich nach",
 ];
 
 const LoadingAnimation = () => {
