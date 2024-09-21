@@ -62,7 +62,7 @@ const ChatInterface = () => {
       setLastQuery(text);
       setExcludeIds([]); // Reset exclude IDs for new query
     } else {
-      const generateMoreMessage = { text: "Zeige mir bitte weitere Ergebnisse", sender: "user" };
+      const generateMoreMessage = { text: "Give me more results", sender: "user" };
       setMessages((prev) => [...prev, generateMoreMessage]);
     }
 
@@ -103,13 +103,13 @@ const ChatInterface = () => {
       setMessages((prev) => [
         ...prev.slice(0, -1),
         { 
-          text: data.result_text[0], 
+          text: data.result_text, 
           sender: "ai", 
-          excludeIds: data.result_text[1],
-          hasMore: data.result_text[1].length > 0
+          personalIds: data.personal_ids,
+          hasMore: data.personal_ids.length > 0
         },
       ]);
-      setExcludeIds((prev) => [...prev, ...data.result_text[1]]);
+      setExcludeIds((prev) => [...prev, ...data.personal_ids]);
 
     } catch (error) {
       console.error("Error:", error);
