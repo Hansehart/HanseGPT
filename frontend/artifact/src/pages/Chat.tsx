@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { Send, User, Image as ImageIcon } from "lucide-react";
 import LoadingPhrase from "../components/basics/LoadingPhrase";
 
-// ChatInterface Component
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -49,16 +48,18 @@ const ChatInterface = () => {
     const newMessage = { text: inputText, sender: "user", image: image };
     setMessages((prev) => [...prev, newMessage, { sender: "ai", loading: true }]);
     setInputText("");
-    setImage(null);
     setIsLoading(true);
 
     try {
+      const formData = new FormData();
+      formData.append('input_text', inputText);
+      if (image) {
+        formData.append('image', image);
+      }
+
       const response = await fetch("https://gpt.hansehart.de/api/ai/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ input_text: inputText }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -78,6 +79,7 @@ const ChatInterface = () => {
       ]);
     } finally {
       setIsLoading(false);
+      setImage(null);  // Clear the image after sending
     }
   };
 
