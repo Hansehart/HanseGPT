@@ -1,119 +1,124 @@
-import { useState, useEffect, useRef } from "react";
-import MessageList from "../components/chat/MessageList";
-import InputArea from "../components/chat/InputArea";
+import { useState } from 'react';
+import { User, Mail, Phone, ChevronDown } from "lucide-react";
+import LoadingPhrase from "../components/basics/LoadingPhrase";
 
-const convertImageToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        resolve(reader.result.split(",")[1]);
-      } else {
-        reject(new Error("Failed to convert image to base64"));
-      }
-    };
-    reader.onerror = (error) => reject(error);
-  });
-};
+const Message = ({ message, onLoadMore }) => {
+  const [expanded, setExpanded] = useState(false);
+  const isUser = message.sender === "user";
 
-const ChatInterface = () => {
-  const [messages, setMessages] = useState([]);
-  const [inputText, setInputText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [image, setImage] = useState(null);
-  const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    setMessages([
-      {
-        text: "Moin bei RossConnect. Wobei brauchst Du Hilfe?",
-        sender: "ai",
-      },
-    ]);
-  }, []);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(scrollToBottom, [messages]);
-
-  const handleSendMessage = async () => {
-    if (inputText.trim() === "" && !image) return;
-
-    const newMessage = { text: inputText, sender: "user", image: image };
-    setMessages((prev) => [
-      ...prev,
-      newMessage,
-      { sender: "ai", loading: true },
-    ]);
-    setInputText("");
-    setIsLoading(true);
-
-    try {
-      let requestBody = {
-        input_text: inputText.trim(),
-        input_image: "",
-      };
-
-      if (image) {
-        try {
-          const base64Image = await convertImageToBase64(image);
-          requestBody.input_image = base64Image;
-        } catch (error) {
-          console.error("Error converting image to base64:", error);
-        }
-      }
-
-      const response = await fetch("https://gpt.hansehart.de/api/ai/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-      setMessages((prev) => [
-        ...prev.slice(0, -1),
-        { text: data.result_text, sender: "ai" },
-      ]);
-    } catch (error) {
-      console.error("Error:", error);
-      setMessages((prev) => [
-        ...prev.slice(0, -1),
-        {
-          text: "Sorry, der Praktikant hat den falschen Stecker gezogen!",
-          sender: "ai",
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-      setImage("");
-    }
+  const renderEmployeeInfo = (text) => {
+    const employees = text.split("\n\n");
+    return employees.map((employee, index) => {
+      const lines = employee.split("\n");
+      const name = lines[0];
+      const emailLine = lines.find((line) => line.startsWith("Mail:"));
+      const phoneLine = lines.find((line) => line.startsWith("Telefon:"));
+      const email = emailLine ? emailLine.split(": ")[1] : "";
+      const phone = phoneLine ? phoneLine.split(": ")[1] : "";
+      return (
+        <div key={index} className="mb-4">
+          <div className="font-bold text-lg">{name}</div>
+          {lines.slice(1).map(
+            (line, lineIndex) =>
+              !line.startsWith("Mail:") &&
+              !line.startsWith("Telefon:") && (
+                <div key={lineIndex} className="text-sm">
+                  {line}
+                </div>
+              )
+          )}
+          {email && (
+            <a
+              href={`mailto:${email}`}
+              className="text-blue-500 hover:underline flex items-center mb-1"
+            >
+              <Mail size={14} className="mr-1" />
+              {email}
+            </a>
+          )}
+          {phone && (
+            <a
+              href={`tel:${phone}`}
+              className="text-blue-500 hover:underline flex items-center mb-1"
+            >
+              <Phone size={14} className="mr-1" />
+              {phone}
+            </a>
+          )}
+        </div>
+      );
+    });
   };
 
   return (
-    <>
-      <div className="h-16 bg-[#c3002d] absolute top-0 left-0 right-0 z-10"></div>
-      <div className="flex flex-col h-screen bg-white max-w-[90vw] mx-auto">
-        <MessageList messages={messages} messagesEndRef={messagesEndRef} />
-        <InputArea
-          inputText={inputText}
-          setInputText={setInputText}
-          image={image}
-          setImage={setImage}
-          isLoading={isLoading}
-          handleSendMessage={handleSendMessage}
-        />
+    <div
+      className={`flex ${
+        isUser ? "justify-end" : "justify-start"
+      } items-start mb-4`}
+    >
+      {!isUser && (
+        <div className="w-8 h-8 rounded-full bg-[#c3002d] flex-shrink-0 mr-2 flex items-center justify-center">
+          <User className="text-white" size={16} />
+        </div>
+      )}
+      <div
+        className={`flex flex-col ${
+          isUser ? "items-end" : "items-start"
+        } max-w-[70%]`}
+      >
+        {message.loading ? (
+          <LoadingPhrase />
+        ) : (
+          <>
+            <div
+              className={`p-2 rounded-lg ${
+                isUser ? "bg-[#c3002d] text-white" : "bg-gray-200 text-gray-800"
+              }`}
+            >
+              {isUser ? (
+                <pre className="whitespace-pre-wrap font-sans">
+                  {message.text}
+                </pre>
+              ) : (
+                <>
+                  {renderEmployeeInfo(expanded ? message.text : message.text.split("\n\n").slice(0, 3).join("\n\n"))}
+                  {!expanded && message.text.split("\n\n").length > 3 && (
+                    <button
+                      onClick={() => setExpanded(true)}
+                      className="text-blue-500 hover:underline flex items-center mt-2"
+                    >
+                      <ChevronDown size={14} className="mr-1" />
+                      Weitere anzeigen
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+            {message.image && (
+              <img
+                src={URL.createObjectURL(message.image)}
+                alt="User uploaded"
+                className="mt-2 max-w-full rounded-lg"
+              />
+            )}
+          </>
+        )}
       </div>
-    </>
+      {isUser && (
+        <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0 ml-2 flex items-center justify-center">
+          <User className="text-gray-600" size={16} />
+        </div>
+      )}
+      {!isUser && !message.loading && (
+        <button
+          onClick={onLoadMore}
+          className="ml-2 px-3 py-1 bg-[#c3002d] text-white rounded hover:bg-[#90001f]"
+        >
+          Weitere
+        </button>
+      )}
+    </div>
   );
 };
 
-export default ChatInterface;
+export default Message;

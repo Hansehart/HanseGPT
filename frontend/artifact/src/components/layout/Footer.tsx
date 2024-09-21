@@ -1,12 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Bot } from "lucide-react";
 
 const Footer: React.FC = () => {
   const links = [
-    { display: 'AGB', route: '/gtc' },
-    { display: 'Datenschutz', route: '/privacy' },
-    { display: 'Impressum', route: '/imprint' },
-    { display: 'Lizenz', route: '/license' },
+    { display: "AGB", route: "/gtc" },
+    { display: "Datenschutz", route: "/privacy" },
+    { display: "Impressum", route: "/imprint" },
+    { display: "Lizenz", route: "/license" },
   ];
 
   return (
@@ -14,8 +15,13 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <h2 className="text-2xl font-bold text-white">RossConnect</h2>
-            <p className="text-sm mt-2 text-white">© 2024 HanseGPT. Alle Rechte vorbehalten.</p>
+            <div className="flex">
+              <Bot className="h-8 w-8 text-[#c3002d] mr-2" />
+              <h2 className="text-2xl font-bold text-white">RossConnect</h2>
+            </div>
+            <p className="text-sm mt-2 text-white">
+              © 2024 HanseGPT. Alle Rechte vorbehalten.
+            </p>
           </div>
           <nav className="flex flex-wrap justify-center md:justify-end">
             {links.map((item) => (
