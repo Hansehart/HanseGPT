@@ -46,7 +46,7 @@ public class SecurityConfig {
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/service/**", corsConfiguration);
+        source.registerCorsConfiguration("/api/**", corsConfiguration);
         return source;
     }
 }

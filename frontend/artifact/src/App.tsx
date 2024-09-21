@@ -10,6 +10,7 @@ import Layout from "./components/layout/Layout";
 import Construction from "./pages/Construction";
 import License from "./pages/License";
 import Settings from "./pages/Settings";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/chat" element={<Chat />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/license" element={<License />} />
             <Route path="/imprint" element={<Construction />} />
