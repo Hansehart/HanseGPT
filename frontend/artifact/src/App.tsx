@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Layout from "./components/layout/Layout";
 import Construction from "./pages/Construction";
 import License from "./pages/License";
+import { Settings } from "lucide-react";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/license" element={<License />} />
             <Route path="/imprint" element={<Construction />} />
             <Route path="/privacy" element={<Construction />} />
