@@ -16,7 +16,7 @@ const Message = ({ message }) => {
 
       return (
         <div key={index} className="mb-4">
-          <div className="font-semibold">{name}</div>
+          <div className="font-bold text-lg">{name}</div>
           {lines.slice(1).map(
             (line, lineIndex) =>
               !line.startsWith("Mail:") &&
