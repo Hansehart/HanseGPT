@@ -82,7 +82,7 @@ const Message = ({ message, onGenerateMore }) => {
                       className="mt-2 flex items-center text-[#c3002d] hover:underline"
                     >
                       <Plus size={14} className="mr-1" />
-                      Generate More
+                      suche weitere
                     </button>
                   )}
                 </>
