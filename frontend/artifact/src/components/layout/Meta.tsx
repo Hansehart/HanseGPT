@@ -27,7 +27,7 @@ const Meta: React.FC = () => {
 
   return (
     <Helmet>
-      <title>Hansehart</title>
+      <title>HanseGPT</title>
       <meta name="description" content={description} />
       <meta property="og:url" content={`https://gpt.hansehart.de${location.pathname}`} />
       <meta property="og:type" content="website" />
