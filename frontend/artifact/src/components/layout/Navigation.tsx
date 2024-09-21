@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
   const navItems = [
     { name: 'Home', path: '/home' },
     { name: 'Chat', path: '/chat' },
-    { name: 'Einstellung', path: '/settings' },
+    { name: 'Einstellungen', path: '/settings' },
   ];
 
   return (

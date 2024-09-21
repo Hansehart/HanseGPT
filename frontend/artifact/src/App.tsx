@@ -17,6 +17,8 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/imprint" element={<Construction />} />
+            <Route path="/privacy" element={<Construction />} />
+            <Route path="/gtc" element={<Construction />} />
             <Route path="*" element={<Navigate replace to="/home" />} />
           </Route>
         </Routes>

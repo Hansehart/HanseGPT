@@ -1,6 +1,6 @@
 import React from 'react';
 import teamwork from "../assets/videos/business-teamwork.mp4";
-import { MessageSquare, Users, Zap, Clock, BarChart, Shield, Star } from 'lucide-react';
+import { MessageSquare, Users, Zap, Clock, BarChart, Star } from 'lucide-react';
 
 const Hero = () => (
   <section className="relative h-screen overflow-hidden">
@@ -19,7 +19,7 @@ const Hero = () => (
       <div className="text-white max-w-2xl">
         <h2 className="text-4xl md:text-5xl font-bold mb-6">Navigieren Sie Ihren Arbeitsplatz mit Leichtigkeit</h2>
         <p className="text-xl mb-8">CompanyCompass: Der KI-gestützte Chatbot, der Ihre Mitarbeiter sofort mit den richtigen Personen und Ressourcen verbindet.</p>
-        <a href="#demo" className="bg-white text-[#90001f] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
+        <a href="chat" className="bg-white text-[#90001f] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
           Demo ausprobieren <MessageSquare className="ml-2" />
         </a>
       </div>
@@ -96,56 +96,14 @@ const Testimonials = () => (
   </section>
 );
 
-const PricingCard = ({ title, price, features }) => (
-  <div className="bg-white rounded-lg shadow-md p-8 flex flex-col border border-[#90001f]">
-    <h3 className="text-2xl font-bold mb-4 text-[#90001f]">{title}</h3>
-    <p className="text-4xl font-bold mb-6 text-[#90001f]">{price}<span className="text-sm font-normal">/Monat</span></p>
-    <ul className="mb-8 flex-grow">
-      {features.map((feature, index) => (
-        <li key={index} className="flex items-center mb-2 text-gray-700">
-          <Shield className="w-5 h-5 text-[#90001f] mr-2" /> {feature}
-        </li>
-      ))}
-    </ul>
-    <button className="bg-[#90001f] hover:bg-[#70001a] text-white font-bold py-2 px-4 rounded">
-      Jetzt starten
-    </button>
-  </div>
-);
-
-const Pricing = () => (
-  <section id="pricing" className="py-20 bg-white">
-    <div className="container mx-auto px-4 max-w-[90%]">
-      <h2 className="text-3xl font-bold text-center mb-12 text-[#90001f]">Wählen Sie Ihren Plan</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <PricingCard
-          title="Starter"
-          price="499 €"
-          features={["Bis zu 100 Mitarbeiter", "Grundlegende KI-Unterstützung", "E-Mail-Support"]}
-        />
-        <PricingCard
-          title="Professional"
-          price="999 €"
-          features={["Bis zu 500 Mitarbeiter", "Erweiterte KI-Funktionen", "24/7 Support", "Individuelle Integrationen"]}
-        />
-        <PricingCard
-          title="Enterprise"
-          price="Kontaktieren Sie uns"
-          features={["Unbegrenzte Mitarbeiter", "Volle KI-Fähigkeiten", "Dedizierter Account Manager", "On-Premise-Option"]}
-        />
-      </div>
-    </div>
-  </section>
-);
-
 const CTASection = () => (
   <section className="bg-[#90001f] text-white py-20">
     <div className="container mx-auto px-4 max-w-[90%] text-center">
       <h2 className="text-3xl font-bold mb-4">Bereit, Ihren Arbeitsplatz zu transformieren?</h2>
       <p className="text-xl mb-8">Schließen Sie sich führenden Unternehmen an und stärken Sie Ihre Mitarbeiter mit CompanyCompass noch heute!</p>
-      <button className="bg-white text-[#90001f] font-bold py-3 px-8 rounded-full hover:bg-gray-200">
-        Demo anfordern
-      </button>
+      <a href="chat" className="bg-white text-[#90001f] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
+          Demo ausprobieren <MessageSquare className="ml-2" />
+        </a>
     </div>
   </section>
 );
@@ -158,7 +116,6 @@ const App = () => {
         <Features />
         <HowItWorks />
         <Testimonials />
-        <Pricing />
         <CTASection />
       </main>
     </div>
