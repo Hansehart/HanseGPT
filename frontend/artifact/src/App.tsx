@@ -7,7 +7,7 @@ import {
 import { HelmetProvider } from 'react-helmet-async';
 import Home from "./pages/Home";
 import Layout from "./components/layout/Layout";
-import React from "react";
+import Construction from "./pages/Construction";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/imprint" element={<Construction />} />
             <Route path="*" element={<Navigate replace to="/home" />} />
           </Route>
         </Routes>

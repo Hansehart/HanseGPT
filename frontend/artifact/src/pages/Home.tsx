@@ -150,14 +150,6 @@ const CTASection = () => (
   </section>
 );
 
-const Footer = () => (
-  <footer className="bg-[#90001f] text-white py-8">
-    <div className="container mx-auto px-4 max-w-[90%] text-center">
-      <p>&copy; 2024 CompanyCompass. Alle Rechte vorbehalten.</p>
-    </div>
-  </footer>
-);
-
 const App = () => {
   return (
     <div className="flex flex-col min-h-screen">
@@ -169,7 +161,6 @@ const App = () => {
         <Pricing />
         <CTASection />
       </main>
-      <Footer />
     </div>
   );
 };
