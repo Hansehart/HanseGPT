@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Loading from "../components/basics/Loading";
 
 const SearchablePersonTable = () => {
   const [persons, setPersons] = useState([]);
@@ -79,7 +80,7 @@ const SearchablePersonTable = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="min-h-screen flex justify-center items-center"><Loading/></div>
   }
 
   if (error) {
@@ -87,7 +88,7 @@ const SearchablePersonTable = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col justify-center">
       <div className="h-16 bg-[#c3002d]"></div>
       
       <div className="container mx-auto px-4 py-8">

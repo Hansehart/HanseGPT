@@ -14,12 +14,12 @@ const Hero = () => (
       <source src={teamwork} type="video/mp4" />
       Ihr Browser unterstützt das Video-Tag nicht.
     </video>
-    <div className="absolute inset-0 bg-[#90001f] bg-opacity-70"></div>
+    <div className="absolute inset-0 bg-[#c3002d] bg-opacity-70"></div>
     <div className="relative z-10 container mx-auto h-full flex items-center px-4 max-w-[90%]">
       <div className="text-white max-w-2xl">
         <h2 className="text-4xl md:text-5xl font-bold mb-6">Navigieren Sie Ihren Arbeitsplatz mit Leichtigkeit</h2>
         <p className="text-xl mb-8">CompanyCompass: Der KI-gestützte Chatbot, der Ihre Mitarbeiter sofort mit den richtigen Personen und Ressourcen verbindet.</p>
-        <a href="chat" className="bg-white text-[#90001f] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
+        <a href="chat" className="bg-white text-[#c3002d] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
           Demo ausprobieren <MessageSquare className="ml-2" />
         </a>
       </div>
@@ -30,28 +30,28 @@ const Hero = () => (
 const Features = () => (
   <section id="features" className="py-20 bg-white">
     <div className="container mx-auto px-4 max-w-[90%]">
-      <h2 className="text-3xl font-bold text-center mb-12 text-[#90001f]">Warum CompanyCompass wählen?</h2>
+      <h2 className="text-3xl font-bold text-center mb-12 text-[#c3002d]">Warum CompanyCompass wählen?</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[
           { 
-            icon: <Users className="w-12 h-12 text-[#90001f]" />, 
+            icon: <Users className="w-12 h-12 text-[#c3002d]" />, 
             title: "Sofortige Mitarbeiterverbindungen",
             description: "Verbinden Sie sich nahtlos mit den richtigen Kollegen und Abteilungen, um Probleme schnell und effizient zu lösen."
           },
           { 
-            icon: <Zap className="w-12 h-12 text-[#90001f]" />, 
+            icon: <Zap className="w-12 h-12 text-[#c3002d]" />, 
             title: "KI-gestützte Unterstützung",
             description: "Nutzen Sie die Fähigkeiten künstlicher Intelligenz, um mehr Zeit für Aufgaben zu haben, auf die es wirklich ankommt."
           },
           { 
-            icon: <Clock className="w-12 h-12 text-[#90001f]" />, 
+            icon: <Clock className="w-12 h-12 text-[#c3002d]" />, 
             title: "24/7 Verfügbarkeit",
             description: "Der Assistent ist nicht nur für jeden, sondern auch immer da. Endlich keine Wartezeiten mehr."
           },
         ].map((feature, index) => (
-          <div key={index} className="bg-white p-6 rounded-lg shadow-md text-center border border-[#90001f]">
+          <div key={index} className="bg-white p-6 rounded-lg shadow-md text-center border border-[#c3002d]">
             <div className="flex justify-center mb-4">{feature.icon}</div>
-            <h3 className="text-xl font-semibold mb-2 text-[#90001f]">{feature.title}</h3>
+            <h3 className="text-xl font-semibold mb-2 text-[#c3002d]">{feature.title}</h3>
             <p className="text-gray-700">{feature.description}</p>
           </div>
         ))}
@@ -62,7 +62,7 @@ const Features = () => (
 
 
 const HowItWorks = () => (
-  <section id="how-it-works" className="py-20 bg-[#90001f] text-white">
+  <section id="how-it-works" className="py-20 bg-[#c3002d] text-white">
     <div className="container mx-auto px-4 max-w-[90%]">
       <h2 className="text-3xl font-bold text-center mb-12">Wie CompanyCompass funktioniert</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -74,7 +74,7 @@ const HowItWorks = () => (
         ].map((step, index) => (
           <div key={index} className="flex flex-col items-center text-center">
             <div className="bg-white rounded-full p-6 mb-4">
-              {React.cloneElement(step.icon, { className: "w-12 h-12 text-[#90001f]" })}
+              {React.cloneElement(step.icon, { className: "w-12 h-12 text-[#c3002d]" })}
             </div>
             <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
             <p>{step.description}</p>
@@ -86,7 +86,7 @@ const HowItWorks = () => (
 );
 
 const Testimonials = () => (
-  <section className="py-20 bg-white text-[#90001f]">
+  <section className="py-20 bg-white text-[#c3002d]">
     <div className="container mx-auto px-4 max-w-[90%]">
       <h2 className="text-3xl font-bold text-center mb-12">Was unsere Kunden sagen</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -94,10 +94,10 @@ const Testimonials = () => (
           { name: "Sarah L., HR-Direktorin", text: "CompanyCompass hat unsere interne Kommunikation revolutioniert. Es ist, als hätte jeder Mitarbeiter einen persönlichen Assistenten!", rating: 5 },
           { name: "Michael R., CEO", text: "Die Effizienzsteigerungen, die wir seit der Implementierung von CompanyCompass gesehen haben, sind bemerkenswert. Es ist ein Gamechanger für große Organisationen.", rating: 5 },
         ].map((testimonial, index) => (
-          <div key={index} className="bg-white p-6 rounded-lg border-2 border-[#90001f]">
+          <div key={index} className="bg-white p-6 rounded-lg border-2 border-[#c3002d]">
             <div className="flex mb-2">
               {[...Array(testimonial.rating)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 text-[#90001f] fill-current" />
+                <Star key={i} className="w-5 h-5 text-[#c3002d] fill-current" />
               ))}
             </div>
             <p className="mb-4">"{testimonial.text}"</p>
@@ -110,11 +110,11 @@ const Testimonials = () => (
 );
 
 const CTASection = () => (
-  <section className="bg-[#90001f] text-white py-20">
+  <section className="bg-[#c3002d] text-white py-20">
     <div className="container mx-auto px-4 max-w-[90%] text-center">
       <h2 className="text-3xl font-bold mb-4">Bereit, Ihren Arbeitsplatz zu transformieren?</h2>
       <p className="text-xl mb-8">Schließen Sie sich führenden Unternehmen an und stärken Sie Ihre Mitarbeiter mit CompanyCompass noch heute!</p>
-      <a href="chat" className="bg-white text-[#90001f] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
+      <a href="chat" className="bg-white text-[#c3002d] hover:bg-gray-200 font-bold py-3 px-8 rounded-full inline-flex items-center">
           Demo ausprobieren <MessageSquare className="ml-2" />
         </a>
     </div>
