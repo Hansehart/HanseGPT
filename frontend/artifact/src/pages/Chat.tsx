@@ -54,16 +54,19 @@ const ChatInterface = () => {
   }, [messages, isInitialLoad]);
 
   const handleSendMessage = async (text = inputText, generateMore = false) => {
-    if (!generateMore && text.trim() === "" && !image) return;
+    let queryText = typeof text === 'string' ? text.trim() : '';
+    
+    if (!generateMore && queryText === "" && !image) return;
 
     if (!generateMore) {
-      const newMessage = { text: text, sender: "user", image: image };
+      const newMessage = { text: queryText, sender: "user", image: image };
       setMessages((prev) => [...prev, newMessage]);
-      setLastQuery(text);
+      setLastQuery(queryText);
       setExcludeIds([]); // Reset exclude IDs for new query
     } else {
-      const generateMoreMessage = { text: "Zeige mir bitte weitere Ergebnisse.", sender: "user" };
+      const generateMoreMessage = { text: "Give me more results", sender: "user" };
       setMessages((prev) => [...prev, generateMoreMessage]);
+      queryText = lastQuery; // Use the last query for "Generate More"
     }
 
     setMessages((prev) => [...prev, { sender: "ai", loading: true }]);
@@ -72,7 +75,7 @@ const ChatInterface = () => {
 
     try {
       let requestBody = {
-        input_text: generateMore ? lastQuery : text.trim(),
+        input_text: queryText,
         input_image: "",
         exclude_ids: excludeIds,
       };
