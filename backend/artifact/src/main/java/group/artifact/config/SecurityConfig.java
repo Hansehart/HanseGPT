@@ -28,7 +28,7 @@ public class SecurityConfig {
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/api/service/**").authenticated()
                 .anyRequest().authenticated())
-            //.addFilterBefore(new ApiTokenAuthFilter(apiToken), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new ApiTokenAuthFilter(apiToken), UsernamePasswordAuthenticationFilter.class)
             .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
                 .configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
