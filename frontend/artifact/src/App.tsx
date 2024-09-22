@@ -11,6 +11,7 @@ import Construction from "./pages/Construction";
 import License from "./pages/License";
 import Settings from "./pages/Settings";
 import Chat from "./pages/Chat";
+import Privacy from "./pages/Privacy";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/license" element={<License />} />
             <Route path="/imprint" element={<Construction />} />
-            <Route path="/privacy" element={<Construction />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="/gtc" element={<Construction />} />
             <Route path="*" element={<Navigate replace to="/home" />} />
           </Route>
