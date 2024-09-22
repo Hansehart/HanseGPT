@@ -256,7 +256,7 @@ const Settings = () => {
               <thead>
                 <tr className="bg-[#c3002d] text-white">
                   <th
-                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    className="border border-[#c3002d] p-2 cursor-pointer break-words"
                     onClick={() => requestSort("nachname")}
                   >
                     Name{" "}
@@ -264,7 +264,7 @@ const Settings = () => {
                       (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
                   <th
-                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    className="border border-[#c3002d] p-2 cursor-pointer break-words"
                     onClick={() => requestSort("abteilung")}
                   >
                     Abteilung{" "}
@@ -272,7 +272,7 @@ const Settings = () => {
                       (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
                   <th
-                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    className="border border-[#c3002d] p-2 cursor-pointer break-words"
                     onClick={() => requestSort("position")}
                   >
                     Position{" "}
@@ -280,7 +280,7 @@ const Settings = () => {
                       (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
                   <th
-                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    className="border border-[#c3002d] p-2 cursor-pointer break-words"
                     onClick={() => requestSort("mail")}
                   >
                     E-Mail{" "}
@@ -288,7 +288,7 @@ const Settings = () => {
                       (sortConfig.direction === "ascending" ? "▲" : "▼")}
                   </th>
                   <th
-                    className="border border-[#c3002d] p-2 cursor-pointer"
+                    className="border border-[#c3002d] p-2 cursor-pointer break-words"
                     onClick={() => requestSort("telefon")}
                   >
                     Telefon{" "}
