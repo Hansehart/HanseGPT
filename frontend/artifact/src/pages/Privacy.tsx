@@ -1,4 +1,3 @@
-import React from 'react';
 import { ExternalLink, Shield } from 'lucide-react';
 
 const PrivacyItem = ({ title, content, link }) => (
