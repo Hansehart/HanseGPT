@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
               <h2 className="text-2xl font-bold text-white">RossConnect</h2>
             </div>
             <p className="text-sm mt-2 text-white">
-              © 2024 HanseGPT. Alle Rechte vorbehalten.
+              © 2024 HanseGPT. Alle Rechte vorbehalten. Made In Bremen.
             </p>
           </div>
           <nav className="flex flex-wrap justify-center md:justify-end">
