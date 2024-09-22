@@ -45,44 +45,47 @@ const InputArea = ({ inputText, setInputText, image, setImage, isLoading, handle
   };
 
   return (
-    <div className="p-4 border-t border-gray-300 bottom-0 left-0 right-0 bg-white sticky">
-      <div className="flex flex-col items-center max-w-[90vw] mx-auto">
+    <div className="p-2 sm:p-4 border-t border-gray-300 bottom-0 left-0 right-0 bg-white sticky">
+      <div className="flex flex-col items-center w-full max-w-3xl mx-auto">
         <div
-          className={`w-full border-2 rounded-lg flex flex-col overflow-hidden ${dragActive ? 'border-[#c3002d]' : 'border-gray-300'}`}
+          className={`w-full border-2 rounded-lg flex flex-col overflow-hidden ${
+            dragActive ? 'border-[#c3002d]' : 'border-gray-300'
+          }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
         >
-          <div className="flex items-center p-2">
-            <input
-              type="text"
+          <div className="flex items-start sm:items-center p-2">
+            <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSendMessage()}
               placeholder="Hier deine Frage"
-              className="flex-grow focus:outline-none text-sm"
+              className="flex-grow focus:outline-none text-sm sm:text-base p-2 h-[20vh] sm:h-10 resize-none"
               disabled={isLoading}
             />
-            <button
-              onClick={triggerFileInput}
-              className="ml-2 text-gray-400 hover:text-[#c3002d] focus:outline-none"
-            >
-              <ImageIcon size={20} />
-            </button>
-            <button
-              onClick={handleSendMessage}
-              className="ml-2 text-[#c3002d] hover:text-[#90001f] focus:outline-none"
-              disabled={isLoading}
-            >
-              <Send size={20} />
-            </button>
+            <div className="flex flex-col sm:flex-row items-center ml-2">
+              <button
+                onClick={triggerFileInput}
+                className="mb-2 sm:mb-0 text-gray-400 hover:text-[#c3002d] focus:outline-none touch-manipulation p-2 sm:p-1"
+              >
+                <ImageIcon className="w-6 h-6 sm:w-5 sm:h-5" />
+              </button>
+              <button
+                onClick={handleSendMessage}
+                className="text-[#c3002d] hover:text-[#90001f] focus:outline-none touch-manipulation p-2 sm:p-1"
+                disabled={isLoading}
+              >
+                <Send className="w-6 h-6 sm:w-5 sm:h-5" />
+              </button>
+            </div>
           </div>
           {image ? (
             <ImagePreview image={image} setImage={setImage} />
           ) : (
-            <div className="w-full h-10 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-              Drag & Drop Bild
+            <div className="w-full h-10 bg-gray-100 flex items-center justify-center text-gray-400 text-xs sm:text-sm">
+              {window.innerWidth > 640 ? 'Drag & Drop Bild' : 'Tippe zum Hochladen'}
             </div>
           )}
         </div>

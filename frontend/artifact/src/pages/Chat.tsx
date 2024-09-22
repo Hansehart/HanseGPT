@@ -64,7 +64,7 @@ const ChatInterface = () => {
       setLastQuery(queryText);
       setExcludeIds([]); // Reset exclude IDs for new query
     } else {
-      const generateMoreMessage = { text: "Give me more results", sender: "user" };
+      const generateMoreMessage = { text: "Zeige mir bitte weitere Ergebnisse.", sender: "user" };
       setMessages((prev) => [...prev, generateMoreMessage]);
       queryText = lastQuery; // Use the last query for "Generate More"
     }
